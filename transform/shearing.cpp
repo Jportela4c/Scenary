@@ -1,8 +1,4 @@
-#include <iostream>
-#include <eigen3/Eigen/Dense>
-
-using namespace Eigen;
-using namespace std;
+#include "shearing.hpp"
 
 //Returns a shearing matrix on the XZ plane in X direction
 

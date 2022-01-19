@@ -1,6 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<eigen3/Eigen/Dense>
+#include "transform/mirroring.hpp"
+#include "transform/rotation.hpp"
+#include "transform/scaling.hpp"
+#include "transform/shearing.hpp"
 
 #if defined __APPLE__
     #include <GLUT/glut.h>
@@ -9,6 +14,9 @@
 #endif
 
 #define BLACK 0, 0, 0
+
+using namespace std;
+using namespace Eigen;
 
 //make a global variable -- for tracking the anglular position of camera
 double cameraAngle;			//in radian
@@ -27,8 +35,6 @@ void swap(int &a,int &b) {
 }
 
 void display(){
-    //glClear - Limpa o display anterior pra inserir o novo ao atualizar o frame
-	//clear the display(limpa cores | limpa profundidade)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(BLACK, 0);	//color black
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -37,11 +43,8 @@ void display(){
 	/ set-up camera here
 	********************/
 
-	//load the correct matrix -- MODEL-VIEW matrix
-	glMatrixMode(GL_MODELVIEW);
-
-	//initialize the matrix
-	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW); //load the correct matrix -- MODEL-VIEW matrix
+	glLoadIdentity(); 			//initialize the matrix
 
 	//now give three info
 	//1. where is the camera (viewer)?
@@ -62,6 +65,8 @@ void display(){
 	/****************************
 	/ Add your objects from here
 	****************************/
+	
+
 
 	//floor
 	glPushMatrix();
@@ -112,6 +117,7 @@ void display(){
 
     //Objetos() serão inseridos aqui
 
+
 	//glutSwapBuffers - double buffer - um pra exibir e outro pra ir criando por tras (i.e. GL_DOUBLE)
 	glutSwapBuffers();
 }
@@ -159,11 +165,9 @@ int main(int argc, char **argv){
 
 	init();
 	
-	glEnable(GL_DEPTH_TEST);	//enable Depth Testing
-
+	glEnable(GL_DEPTH_TEST);	
 	glutDisplayFunc(display);	//display callback function
-
-	glutMainLoop();		//The main loop of OpenGL
+	glutMainLoop();				//The main loop of OpenGL
 
 	return 0;
 }

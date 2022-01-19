@@ -1,8 +1,4 @@
-#include <iostream>
-#include <eigen3/Eigen/Dense>
-
-using namespace Eigen;
-using namespace std;
+#include "mirroring.hpp"
 
 // Returns a mirroring matrix over the YZ plane
 
