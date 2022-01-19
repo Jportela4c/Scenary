@@ -1,16 +1,13 @@
-#include <eigen3/Eigen/Dense>
-
-typedef Eigen::Vector4f Vector;
-
+#include "cube.hpp"
 class Edge {
     public:
-    Vector v_i, v_f;
+    Vector4f v_i, v_f;
 
     Edge(){
-        v_i = Vector();
-        v_f = Vector();
+        v_i = Vector4f();
+        v_f = Vector4f();
     }
-    Edge(Vector v_i, Vector v_f){
+    Edge(Vector4f v_i, Vector4f v_f){
         this->v_i = v_i;
         this->v_f = v_f;
     }
@@ -36,20 +33,32 @@ class Face {
 class Cube{
     public:
 
-    Vector vertices[8];
+    Vector4f vertices[8];
     Edge arestas[18];
     Face faces[12];
 
-    Cube(float side){
+    Cube(){
+        for(int i = 0; i < 8; i++){
+            vertices[i] = Vector4f(1, 1, 1, 1);
+        }
+        for(int i = 0; i < 18; i++){
+            arestas[i] = Edge();
+        }
+        for(int i = 0; i < 12; i++){
+            faces[i] = Face();
+        }
+    }
+
+    Cube::Cube(float side){
         float s = side/2;
-        vertices[0] = Vector(-s, -s, -s, 1);
-        vertices[1] = Vector(-s, -s, s, 1);
-        vertices[2] = Vector(s, -s, s, 1);
-        vertices[3] = Vector(s, -s, -s, 1);
-        vertices[4] = Vector(-s, s, -s, 1);
-        vertices[5] = Vector(-s, s, s, 1);
-        vertices[6] = Vector(s, s, s, 1);
-        vertices[7] = Vector(s, s, -s, 1);
+        vertices[0] = Vector4f(-s, -s, -s, 1);
+        vertices[1] = Vector4f(-s, -s, s, 1);
+        vertices[2] = Vector4f(s, -s, s, 1);
+        vertices[3] = Vector4f(s, -s, -s, 1);
+        vertices[4] = Vector4f(-s, s, -s, 1);
+        vertices[5] = Vector4f(-s, s, s, 1);
+        vertices[6] = Vector4f(s, s, s, 1);
+        vertices[7] = Vector4f(s, s, -s, 1);
 
         arestas[0] = Edge(vertices[0], vertices[1]);
         arestas[1] = Edge(vertices[1], vertices[2]);

@@ -6,6 +6,7 @@
 #include "transform/rotation.hpp"
 #include "transform/scaling.hpp"
 #include "transform/shearing.hpp"
+#include "cube.hpp"
 
 #if defined __APPLE__
     #include <GLUT/glut.h>
@@ -33,6 +34,7 @@ void swap(int &a,int &b) {
 	a=b;
 	b=t;
 }
+
 
 void display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -65,7 +67,7 @@ void display(){
 	/****************************
 	/ Add your objects from here
 	****************************/
-	
+
 
 
 	//floor
