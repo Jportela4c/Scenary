@@ -1,8 +1,4 @@
-#include <iostream>
-#include <eigen3/Eigen/Dense>
-
-using namespace Eigen;
-using namespace std;
+#include "rotation.hpp"
 
 // Returns a rotation matrix over the X axis
 
