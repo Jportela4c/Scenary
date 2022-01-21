@@ -11,6 +11,7 @@ class Camera {
     Camera();
     Camera(Vertex eye, Vertex lookAt, Vertex viewUp);
     Matrix worldToCamera();
+    Matrix cameraToWorld();
     void update();
     void moveX(float x);
     void moveY(float y);

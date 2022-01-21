@@ -23,6 +23,16 @@ Matrix Camera::worldToCamera()
     return worldToCamera;
 };
 
+Matrix Camera::cameraToWorld(){
+    Matrix cameraToWorld;
+    cameraToWorld << i.x(), j.x(), k.x(), eye.x(),
+                    i.y(), j.y(), k.y(), eye.y(),
+                    i.z(), j.z(), k.z(), eye.z(),
+                    0, 0, 0, 1;
+    return cameraToWorld;
+};
+
+
 void Camera::update(){
     k = (eye - lookAt).normalized();
     i = (viewUp.cross(k)).normalized();
