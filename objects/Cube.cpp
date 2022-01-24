@@ -38,10 +38,67 @@ Cube::Cube(float side, Vertex  center): s(side), c(center)
 
 }
 
-void Cube::applyTransform(const Eigen::Matrix4f &transform)
+void Cube::applyTransform(Matrix transform)
 {
     for(int i = 0; i < 8; i++)
     {
         vertices[i] = transform * vertices[i];
+    }
+}
+
+void Cube::setCameraCoordinates(Matrix worldToCamera)
+{
+    for(int i = 0; i < 8; i++)
+    {
+        vertices[i] = worldToCamera * vertices[i];
+    }
+}
+
+void Cube::setWorldCoordinates(Matrix cameraToWorld)
+{
+    for(int i = 0; i < 8; i++)
+    {
+        vertices[i] = cameraToWorld * vertices[i];
+    }
+}
+
+Vertex Cube::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
+{
+    std::vector<Vertex> intersections;
+    for (int i = 0; i < 12; i++)
+    {
+        Face face = this->faces[i];
+        Vertex intersection = face.intersection(rayOrigin, rayDirection);
+        
+        if (intersection[3] > 0)
+        {
+            Vertex validation_point1 = (face.v1) - intersection;
+            Vertex validation_point2 = (face.v2) - intersection;
+            Vertex validation_point3 = (face.v3) - intersection;
+
+            if (face.validate(validation_point1, validation_point2, validation_point3))
+            {
+                intersections.emplace_back(intersection);
+            }
+            else {
+                Face face2 = this->faces[i+1];
+                Vertex validation_point1 = (face2.v1) - intersection;
+                Vertex validation_point2 = (face2.v2) - intersection;
+                Vertex validation_point3 = (face2.v3) - intersection;
+
+                if(face.validate(validation_point1, validation_point2, validation_point3))
+                {
+                    intersections.emplace_back(intersection);
+                }
+            }
+        }
+    }
+
+    if (intersections.empty()){
+        return Vertex(0,0,0,-1);
+    }
+    else
+    {
+        return intersections[0];
     }
 }

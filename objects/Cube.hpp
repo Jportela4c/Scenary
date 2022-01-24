@@ -16,5 +16,8 @@ class Cube {
     Vertex v8;
     Vertex vertices[8];
     Face faces[12];
-    void applyTransform(const Eigen::Matrix4f &transform);
+    void applyTransform(Matrix transform);
+    void setCameraCoordinates(Matrix worldToCamera);
+    void setWorldCoordinates(Matrix cameraToWorld);
+    Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
 };
