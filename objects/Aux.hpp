@@ -1,5 +1,6 @@
 #include <eigen3/Eigen/Dense>
 
+typedef Eigen::Vector3f Point;
 typedef Eigen::Vector4f Vertex;
 typedef Eigen::Matrix4f Matrix;
 class Face {
