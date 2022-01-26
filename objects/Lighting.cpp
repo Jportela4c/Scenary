@@ -1,20 +1,20 @@
 #include "Lighting.hpp"
 
-AmbientLight::AmbientLight(){};
-AmbientLight::AmbientLight(float r, float g, float b)
+AmbientLighting::AmbientLighting(){};
+AmbientLighting::AmbientLighting(float r, float g, float b)
 {
     this->r = r;
     this->g = g;
     this->b = b;
 };
 
-Vertex AmbientLight::ambientIntensity(Vertex point)
+Vertex AmbientLighting::ambientIntensity(Vertex point)
 {
     return Vertex(this->r, this->g, this->b);
 };
 
-SpotLight::SpotLight(){};
-SpotLight::SpotLight(float r, float g, float b, Vertex position, Vertex direction, float angle)
+SpotLighting::SpotLighting(){};
+SpotLighting::SpotLighting(float r, float g, float b, Vertex position, Vertex direction, float angle)
 {
     this->r = r;
     this->g = g;
@@ -25,7 +25,7 @@ SpotLight::SpotLight(float r, float g, float b, Vertex position, Vertex directio
 };
 
 /*double check*/
-float SpotLight::difuseFactor(Vertex point)
+float SpotLighting::difuseFactor(Vertex point)
 {
     Vertex lightDirection = this->position - point;
     lightDirection[3] = 1;
@@ -43,7 +43,7 @@ float SpotLight::difuseFactor(Vertex point)
 };
 
 /*double check*/
-float SpotLight::specularFactor(Vertex point)
+float SpotLighting::specularFactor(Vertex point)
 {
     Vertex lightDirection = this->position - point;
     lightDirection[3] = 1;
@@ -61,7 +61,7 @@ float SpotLight::specularFactor(Vertex point)
 };
 
 /* Needs to implement materials*/
-/*Vertex SpotLight::difuseIntensity(Vertex point)
+/*Vertex SpotLighting::difuseIntensity(Vertex point)
 {
     Vertex difuse_intensity;
     difuse_intensity[0] = this->r * material.kd[0];
@@ -72,7 +72,7 @@ float SpotLight::specularFactor(Vertex point)
 };*/
 
 /*Needs to implement materials*/
-/*Vertex SpotLight::specularIntensity(Vertex point)
+/*Vertex SpotLighting::specularIntensity(Vertex point)
 {
     Vertex specular_intensity;
     specular_intensity[0] = this->r * material.ks[0];
@@ -82,20 +82,20 @@ float SpotLight::specularFactor(Vertex point)
     return specular_intensity;
 };*/
 
-void SpotLight::worldToCamera(Matrix worldToCamera)
+void SpotLighting::worldToCamera(Matrix worldToCamera)
 {
     this->position = worldToCamera * this->position;
     this->direction = worldToCamera * this->direction;
 };
 
-void SpotLight::cameraToWorld(Matrix cameraToWorld)
+void SpotLighting::cameraToWorld(Matrix cameraToWorld)
 {
     this->position = cameraToWorld * this->position;
     this->direction = cameraToWorld * this->direction;
 };
 
-FarLight::FarLight(){};
-FarLight::FarLight(float r, float g, float b, Vertex direction) 
+FarLighting::FarLighting(){};
+FarLighting::FarLighting(float r, float g, float b, Vertex direction) 
 {
     this->r = r;
     this->g = g;
@@ -104,7 +104,7 @@ FarLight::FarLight(float r, float g, float b, Vertex direction)
 };
 
 /*double check*/
-float FarLight::difuseFactor(Vertex point)
+float FarLighting::difuseFactor(Vertex point)
 {
     Vertex normal = point.normal();
     float difuseFactor = (this->direction*-1).dot(normal);
@@ -120,7 +120,7 @@ float FarLight::difuseFactor(Vertex point)
 };
 
 /*double check*/
-float FarLight::specularFactor(Vertex point)
+float FarLighting::specularFactor(Vertex point)
 {
     Vertex normal = point.normal();
 
@@ -140,7 +140,7 @@ float FarLight::specularFactor(Vertex point)
 };
 
 /*need to implement materials*/
-/*Vertex FarLight::difuseIntensity(Vertex point)
+/*Vertex FarLighting::difuseIntensity(Vertex point)
 {
     Vertex difuseIntensity;
     difuseIntensity[0] = this->r * material.kd[0];
@@ -150,7 +150,7 @@ float FarLight::specularFactor(Vertex point)
 };*/
 
 /*need to implement materials*/
-/*Vertex FarLight::specularIntensity(Vertex point)
+/*Vertex FarLighting::specularIntensity(Vertex point)
 {
     Vertex specularIntensity;
     specularIntensity[0] = this->r * material.ks[0];
@@ -160,18 +160,18 @@ float FarLight::specularFactor(Vertex point)
     return specularIntensity;
 };*/
 
-void FarLight::worldToCamera(Matrix worldToCamera)
+void FarLighting::worldToCamera(Matrix worldToCamera)
 {
     this->direction = worldToCamera * this->direction;
 };
 
-void FarLight::cameraToWorld(Matrix cameraToWorld)
+void FarLighting::cameraToWorld(Matrix cameraToWorld)
 {
     this->direction = cameraToWorld * this->direction;
 };
 
-PointLight::PointLight(){};
-PointLight::PointLight(float r, float g, float b, Vertex position)
+PointLighting::PointLighting(){};
+PointLighting::PointLighting(float r, float g, float b, Vertex position)
 {
     this->r = r;
     this->g = g;
@@ -180,7 +180,7 @@ PointLight::PointLight(float r, float g, float b, Vertex position)
 };
 
 /*double check*/
-float PointLight::difuseFactor(Vertex point)
+float PointLighting::difuseFactor(Vertex point)
 {
     Vertex lightDirection = this->position - point;
     Vertex normal = point.normal();
@@ -197,7 +197,7 @@ float PointLight::difuseFactor(Vertex point)
 };
 
 /*double check*/
-float PointLight::specularFactor(Vertex point)
+float PointLighting::specularFactor(Vertex point)
 {
     Vertex p = point - this->position;
     Vertex l = p.normalized();
@@ -220,7 +220,7 @@ float PointLight::specularFactor(Vertex point)
 };
 
 /*need to implement materials*/
-Vertex PointLight::difuseIntensity(Vertex point)
+Vertex PointLighting::difuseIntensity(Vertex point)
 {
     Vertex difuseIntensity;
     difuseIntensity[0] = this->r * material.kd[0];
@@ -230,10 +230,8 @@ Vertex PointLight::difuseIntensity(Vertex point)
     difuseIntensity = difuseIntensity * this->difuseFactor(point);
     return difuseIntensity;
 };
-};
 
-/*need to implement materials*/
-Vertex PointLight::specularIntensity(Vertex point)
+Vertex PointLighting::specularIntensity(Vertex point)
 {
     Vertex specularIntensity;
     specularIntensity[0] = this->r * material.ks[0];
@@ -243,12 +241,12 @@ Vertex PointLight::specularIntensity(Vertex point)
     return specularIntensity;
 };
 
-void PointLight::worldToCamera(Matrix worldToCamera)
+void PointLighting::worldToCamera(Matrix worldToCamera)
 {
     this->position = worldToCamera * this->position;
 };
 
-void PointLight::cameraToWorld(Matrix cameraToWorld)
+void PointLighting::cameraToWorld(Matrix cameraToWorld)
 {
     this->position = cameraToWorld * this->position;
 };
