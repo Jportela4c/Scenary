@@ -1,4 +1,6 @@
 #include <eigen3/Eigen/Dense>
+#include <iostream>
+#include <cmath>
 
 typedef Eigen::Vector3f Point;
 typedef Eigen::Vector4f Vertex;
