@@ -22,6 +22,6 @@ class Face {
     Vertex v3v1;
     Vertex v3;
     Vertex normal;
-    Vertex intersection(Vertex v1, Vertex v2);
-    bool validate(Vertex v1, Vertex v2, Vertex v3);
+    Vertex planeIntersection(Vertex rayOrigin, Vertex rayDirection);
+    Vertex rayIntersection(Vertex rayOrigin, Vertex rayDirection);
 };

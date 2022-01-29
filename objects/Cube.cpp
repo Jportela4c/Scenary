@@ -64,41 +64,19 @@ void Cube::setWorldCoordinates(Matrix cameraToWorld)
 
 Vertex Cube::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
 {
-    std::vector<Vertex> intersections;
+    float distance = MAXFLOAT;
+    Vertex closest_intersection = Vertex(0,0,0,-1);
     for (int i = 0; i < 12; i++)
     {
-        Face face = this->faces[i];
-        Vertex intersection = face.intersection(rayOrigin, rayDirection);
         
-        if (intersection[3] > 0)
+        Face face = this->faces[i];
+        Vertex intersection = face.rayIntersection(rayOrigin, rayDirection);
+        float intersectionDistance = sqrt(pow(intersection[0] - rayOrigin[0], 2) + pow(intersection[1] - rayOrigin[1], 2) + pow(intersection[2] - rayOrigin[2], 2));
+        if (intersection[3] > -1 && intersectionDistance < distance)
         {
-            Vertex validation_point1 = (face.v1) - intersection;
-            Vertex validation_point2 = (face.v2) - intersection;
-            Vertex validation_point3 = (face.v3) - intersection;
-
-            if (face.validate(validation_point1, validation_point2, validation_point3))
-            {
-                intersections.emplace_back(intersection);
-            }
-            else {
-                Face face2 = this->faces[i+1];
-                Vertex validation_point1 = (face2.v1) - intersection;
-                Vertex validation_point2 = (face2.v2) - intersection;
-                Vertex validation_point3 = (face2.v3) - intersection;
-
-                if(face.validate(validation_point1, validation_point2, validation_point3))
-                {
-                    intersections.emplace_back(intersection);
-                }
-            }
+            distance = intersectionDistance;
+            closest_intersection = intersection;
         }
     }
-
-    if (intersections.empty()){
-        return Vertex(0,0,0,-1);
-    }
-    else
-    {
-        return intersections[0];
-    }
+    return closest_intersection;
 }

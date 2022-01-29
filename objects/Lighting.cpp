@@ -61,7 +61,7 @@ float SpotLighting::specularFactor(Vertex point)
 };
 
 /* Needs to implement materials*/
-/*Vertex SpotLighting::difuseIntensity(Vertex point)
+/*Vertex SpotLighting::difuseIntensity(Vertex point, Material material)
 {
     Vertex difuse_intensity;
     difuse_intensity[0] = this->r * material.kd[0];

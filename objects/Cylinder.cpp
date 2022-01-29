@@ -88,8 +88,8 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
         Vertex intersection_base = this->planeIntersectBase(rayOrigin, rayDirection);
         float distance1,distance2;
         float distanceC1,distanceC2;
-        distanceC1 - MAXFLOAT;
-        distanceC2 - MAXFLOAT;
+        distanceC1 = MAXFLOAT;
+        distanceC2 = MAXFLOAT;
         distance1 = MAXFLOAT;
         distance2 = MAXFLOAT;
         if (intersection_base[3] != -1)

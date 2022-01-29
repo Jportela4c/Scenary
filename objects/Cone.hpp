@@ -6,6 +6,7 @@ class Cone: public Shape
         float radius;
         float height;
         float angle;
+        Material mat;
         Vertex center;
         Vertex axis;
         Vertex origin;

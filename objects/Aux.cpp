@@ -1,7 +1,5 @@
 #include "Aux.hpp"
 
-
-
 Face::Face(){
     v1 = Vertex(0,0,0,1);
     v2 = Vertex(0,0,0,1);
@@ -24,12 +22,12 @@ Face::Face(Vertex vertex1, Vertex vertex2, Vertex vertex3): v1(vertex1), v2(vert
     this->normal = (v1v2.cross(v1v3)).normalized();
 }
 
-Vertex Face::intersection(Vertex v0, Vertex v2)
+Vertex Face::planeIntersection(Vertex rayOrigin, Vertex rayDirection)
 {
     float t;
-    Vertex v_aux1 = this->v1 - v0;
+    Vertex v_aux1 = this->v1 - rayOrigin;
     v_aux1[3] = 1;
-    float prod = this->normal.dot(v2);
+    float prod = this->normal.dot(rayDirection);
 
     if (prod == 0)
     {
@@ -40,32 +38,37 @@ Vertex Face::intersection(Vertex v0, Vertex v2)
     {
         t = (this->normal.dot(v_aux1))/prod;
     }
-
-    return v0 + (v2 * t);
+    Vertex planeIntersection = rayOrigin + (rayDirection * t);
+    planeIntersection[3] = 1;
+    return planeIntersection;
 };
 
-bool Face::validate(Vertex v1, Vertex v2, Vertex v3)
+Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
 {
-    float validation = (this->v1v2.cross(this->v1v3)).dot(this->v1v2.cross(v1));
-    
-    if (validation < 0)
+    Vertex planeIntersection = this->planeIntersection(rayOrigin, rayDirection);
+
+    if(planeIntersection[3] == -1)
     {
-        return false;
+        return Vertex(0,0,0,-1);
     }
+    Vertex pv1 = planeIntersection - this->v1;
+    Vertex pv2 = planeIntersection - this->v2;
+    Vertex pv3 = planeIntersection - this->v3;
 
-    validation =  (this->v2v3.cross(v2)).dot(this->v1v2.cross(this->v1v3));
-
-    if (validation < 0)
+    if (pv1.cross(this->v1v2).dot((this->v1v3).cross(this->v1v2)) < 0)
     {
-        return false;
+        return Vertex(0,0,0,-1);
     }
-
-    validation =  (this->v3v1.cross(v3)).dot(this->v1v2.cross(this->v1v3));
-
-    if (validation < 0)
+    else if (pv2.cross(this->v2v3).dot((this->v1v3).cross(this->v1v2)) < 0)
     {
-        return false;
+        return Vertex(0,0,0,-1);
     }
-
-    return true;
+    else if (pv3.cross(this->v3v1).dot((this->v1v3).cross(this->v1v2)) < 0)
+    {
+        return Vertex(0,0,0,-1);
+    }
+    else
+    {
+        return planeIntersection;
+    }
 };

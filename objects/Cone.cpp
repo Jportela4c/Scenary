@@ -54,6 +54,7 @@ Vertex Cone::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
     float distance_base_intersection  = sqrt(pow(base_intersection[0] - rayOrigin[0], 2) + pow(base_intersection[1] - rayOrigin[1], 2) + pow(base_intersection[2] - rayOrigin[2], 2));
     
     Vertex v = this->origin - rayOrigin;
+    v[3] = 1;
     
     float a = pow(rayDirection.dot(this->axis), 2) - rayDirection.dot(rayDirection) * pow(cos(this->angle), 2);
     float b = v.dot(rayDirection) * pow(cos(this->angle), 2) - v.dot(this->axis) * rayDirection.dot(this->axis);
