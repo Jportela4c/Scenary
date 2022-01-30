@@ -1,7 +1,7 @@
 #include "Cone.hpp"
 
 Cone::Cone(){};
-Cone::Cone(float radius, float height, float angle, Vertex center, Vertex axis)
+Cone::Cone(float radius, float height, float angle, Vertex center, Vertex axis, Material mat)
 {
     this->radius = radius;
     this->height = height;
@@ -9,6 +9,7 @@ Cone::Cone(float radius, float height, float angle, Vertex center, Vertex axis)
     this->center = center;
     this->axis = axis;
     this->origin = center + axis * height;
+    this->mat = mat;
 };
 
 void Cone::applyTransform(Matrix transform)

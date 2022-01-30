@@ -1,7 +1,7 @@
 #include "Cube.hpp"
-#include "Aux.hpp"
+
 Cube::Cube(){};
-Cube::Cube(float side, Vertex  center): s(side), c(center)
+Cube::Cube(float side, Vertex  center, Material mat): s(side), c(center), mat(mat)
 {
 
     Face faces[12];

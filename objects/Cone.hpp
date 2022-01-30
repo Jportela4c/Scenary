@@ -11,7 +11,7 @@ class Cone: public Shape
         Vertex axis;
         Vertex origin;
         Cone();
-        Cone(float radius, float height, float angle, Vertex center, Vertex axis);
+        Cone(float radius, float height, float angle, Vertex center, Vertex axis, Material mat);
         void applyTransform(Matrix transform);
         void setCameraCoordinates(Matrix worldToCamera);
         void setWorldCoordinates(Matrix cameraToWorld);

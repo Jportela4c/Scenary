@@ -1,12 +1,12 @@
-#include <eigen3/Eigen/Dense>
 #include "Aux.hpp"
 
 class Cube: public Shape
 {
     public:
         Cube();
-        Cube(float side, Vertex  center);
+        Cube(float side, Vertex  center, Material mat);
         float s;
+        Material mat;
         Vertex c;
         Vertex v1;
         Vertex v2;

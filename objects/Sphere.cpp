@@ -1,12 +1,11 @@
-#include "Aux.hpp"
 #include "Sphere.hpp"
 
 Sphere::Sphere(){};
-
-Sphere::Sphere(float radius, Vertex center)
+Sphere::Sphere(float radius, Vertex center, Material mat)
 {
     this->radius = radius;
     this->center = center;
+    this->mat = mat;
 };
 
 void Sphere::applyTransform(Matrix transform)

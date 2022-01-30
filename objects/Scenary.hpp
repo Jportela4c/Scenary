@@ -1,6 +1,5 @@
 #include "Aux.hpp"
 #include "Camera.hpp"
-#include "Shape.hpp"
 #include "Lighting.hpp"
 
 class Scenary

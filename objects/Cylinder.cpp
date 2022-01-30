@@ -1,14 +1,14 @@
 #include "Cylinder.hpp"
-#include <numeric>
 
 Cylinder::Cylinder(){};
-Cylinder::Cylinder(float radius, float height, Vertex center_base, Vertex axis)
+Cylinder::Cylinder(float radius, float height, Vertex center_base, Vertex axis, Material mat)
 {
     this->radius = radius;
     this->height = height;
     this->center_base = center_base;
     this->center_top = center_base + axis * height;
     this->axis = axis;
+    this->mat = mat;
 };
 
 void Cylinder::applyTransform(Matrix transform)

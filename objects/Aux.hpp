@@ -1,6 +1,10 @@
 #include <eigen3/Eigen/Dense>
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <numeric>
+
+using namespace std;
 
 typedef Eigen::Vector3f Point;
 typedef Eigen::Vector4f Vertex;
@@ -8,8 +12,21 @@ typedef Eigen::Matrix4f Matrix;
 
 class Shape
 {
-
+    public:
+        Shape();
 };
+
+class Material
+{
+    public:
+        Point ka;
+        Point kd;
+        Point ks;
+        float shininess;
+        Material();
+        Material(Point ka, Point kd, Point ks, float shininess);
+};
+
 class Face {
     public:
     Face();

@@ -1,7 +1,6 @@
 #include "Camera.hpp"
 
 Camera::Camera(){};
-
 Camera::Camera(Vertex eye, Vertex lookAt, Vertex viewUp)
 {
     this->eye = eye;
@@ -32,13 +31,11 @@ Matrix Camera::cameraToWorld(){
     return cameraToWorld;
 };
 
-
 void Camera::update(){
     k = (eye - lookAt).normalized();
     i = (viewUp.cross(k)).normalized();
     j = k.cross(i);
 };
-
 
 void Camera::moveX(float x)
 {

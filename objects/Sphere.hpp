@@ -5,8 +5,9 @@ class Sphere: public Shape
     public:
         float radius;
         Vertex center;
+        Material mat;
         Sphere();
-        Sphere(float radius, Vertex center);
+        Sphere(float radius, Vertex center, Material mat);
         void applyTransform(Matrix transform);
         void setCameraCoordinates(Matrix worldToCamera);
         void setWorldCoordinates(Matrix cameraToWorld);

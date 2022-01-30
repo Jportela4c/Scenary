@@ -1,5 +1,16 @@
 #include "Aux.hpp"
 
+Shape::Shape(){};
+
+Material::Material(){};
+Material::Material(Point ka, Point kd, Point ks, float shininess)
+{
+    this->ka = ka;
+    this->kd = kd;
+    this->ks = ks;
+    this->shininess = shininess;
+};
+
 Face::Face(){
     v1 = Vertex(0,0,0,1);
     v2 = Vertex(0,0,0,1);

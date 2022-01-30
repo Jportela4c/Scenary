@@ -8,9 +8,13 @@ AmbientLighting::AmbientLighting(float r, float g, float b)
     this->b = b;
 };
 
-Vertex AmbientLighting::ambientIntensity(Vertex point)
+Point AmbientLighting::ambientIntensity(Vertex point, Material mat)
 {
-    return Vertex(this->r, this->g, this->b);
+    Point intensity;
+    intensity[0] = this->r * mat.ka[0];
+    intensity[1] = this->g * mat.ka[1];
+    intensity[2] = this->b * mat.ka[2];
+    return intensity;
 };
 
 SpotLighting::SpotLighting(){};
@@ -29,58 +33,73 @@ float SpotLighting::difuseFactor(Vertex point)
 {
     Vertex lightDirection = this->position - point;
     lightDirection[3] = 1;
-    float distance = lightDirection.norm();
     lightDirection = lightDirection.normalized();
-    float angle = this->direction.dot(lightDirection);
-    if (angle > cos(this->angle))
+    float angle = this->direction.dot(lightDirection*-1);
+    if(angle > cos(this->angle))
     {
-        return 1.0 / (4 * M_PI * pow(distance, 2));
+        return 0;
     }
     else
     {
-        return 0;
+        float difuseFactor = lightDirection.dot(this->direction); /*<<<<<<<<NÂO È this->direction*/
+        if(difuseFactor < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return difuseFactor;
+        }
     }
 };
 
 /*double check*/
 float SpotLighting::specularFactor(Vertex point)
 {
-    Vertex lightDirection = this->position - point;
+    Vertex lightDirection = (this->position - point).normalized();
     lightDirection[3] = 1;
-    float distance = lightDirection.norm();
-    lightDirection = lightDirection.normalized();
-    float angle = this->direction.dot(lightDirection);
-    if (angle > cos(this->angle))
+    Vertex normal = this->direction.normalized(); /*<<<<<<<<<NÂO È ISSO*/
+    Vertex reflectedDirection = 2*normal*(normal.dot(lightDirection)) - lightDirection;
+    Vertex p = Vertex(0, 0, 0, 0) - point;
+
+    if(lightDirection.dot(this->direction) > cos(this->angle))
     {
-        return pow(angle, 2) / (4 * M_PI * pow(distance, 2));
+        return 0;
+
     }
     else
     {
-        return 0;
+        float specularFactor = reflectedDirection.dot(p);
+        if(specularFactor < 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return specularFactor;
+        }
     }
 };
 
-/* Needs to implement materials*/
-/*Vertex SpotLighting::difuseIntensity(Vertex point, Material material)
+Point SpotLighting::difuseIntensity(Vertex point, Material mat)
 {
     Vertex difuse_intensity;
-    difuse_intensity[0] = this->r * material.kd[0];
-    difuse_intensity[1] = this->g * material.kd[1];
-    difuse_intensity[2] = this->b * material.kd[2];
+    difuse_intensity[0] = this->r * mat.kd[0];
+    difuse_intensity[1] = this->g * mat.kd[1];
+    difuse_intensity[2] = this->b * mat.kd[2];
     difuse_intensity = difuse_intensity * this->difuseFactor(point);
     return difuse_intensity;
-};*/
+};
 
-/*Needs to implement materials*/
-/*Vertex SpotLighting::specularIntensity(Vertex point)
+Point SpotLighting::specularIntensity(Vertex point, Material mat)
 {
     Vertex specular_intensity;
-    specular_intensity[0] = this->r * material.ks[0];
-    specular_intensity[1] = this->g * material.ks[1];
-    specular_intensity[2] = this->b * material.ks[2];
-    specular_intensity = specular_intensity * pow(this->specularFactor(point), material.shininess);
+    specular_intensity[0] = this->r * mat.ks[0];
+    specular_intensity[1] = this->g * mat.ks[1];
+    specular_intensity[2] = this->b * mat.ks[2];
+    specular_intensity = specular_intensity * pow(this->specularFactor(point), mat.shininess);
     return specular_intensity;
-};*/
+};
 
 void SpotLighting::worldToCamera(Matrix worldToCamera)
 {
@@ -100,15 +119,15 @@ FarLighting::FarLighting(float r, float g, float b, Vertex direction)
     this->r = r;
     this->g = g;
     this->b = b;
-    this->direction = direction;
+    this->direction = direction.normalized();
 };
 
 /*double check*/
 float FarLighting::difuseFactor(Vertex point)
 {
-    Vertex normal = point.normal();
+    Vertex normal = this->direction; /*<<<<<<<<NÃO È ISSO*/
     float difuseFactor = (this->direction*-1).dot(normal);
-    if (difuseFactor > 0)
+    if (difuseFactor >= 0)
     {
         return difuseFactor;
     }
@@ -122,13 +141,13 @@ float FarLighting::difuseFactor(Vertex point)
 /*double check*/
 float FarLighting::specularFactor(Vertex point)
 {
-    Vertex normal = point.normal();
+    Vertex normal = this->direction; /*<<<<<<<<NÃO È ISSO*/
 
-    Vertex r = (2 * ((this->direction*-1).dot(normal)) * normal) - this->direction;
-    Vertex v = point - Vertex(0, 0, 0, 0);
+    Vertex r = (2 * ((this->direction*-1).dot(normal)) * normal) + this->direction;
+    Vertex v = Vertex(0, 0, 0, 0) - point;
     float specularFactor = v.normalized().dot(r.normalized());
 
-    if (specularFactor > 0)
+    if (specularFactor >= 0)
     {
         return specularFactor;
     }
@@ -139,26 +158,25 @@ float FarLighting::specularFactor(Vertex point)
 
 };
 
-/*need to implement materials*/
-/*Vertex FarLighting::difuseIntensity(Vertex point)
+Point FarLighting::difuseIntensity(Vertex point, Material mat)
 {
     Vertex difuseIntensity;
-    difuseIntensity[0] = this->r * material.kd[0];
-    difuseIntensity[1] = this->g * material.kd[1];
-    difuseIntensity[2] = this->b * material.kd[2];
+    difuseIntensity[0] = this->r * mat.kd[0];
+    difuseIntensity[1] = this->g * mat.kd[1];
+    difuseIntensity[2] = this->b * mat.kd[2];
+    difuseIntensity = difuseIntensity * this->difuseFactor(point);/*<<<<<<<È ISSO MESMO??????*/
     return difuseIntensity;
-};*/
+};
 
-/*need to implement materials*/
-/*Vertex FarLighting::specularIntensity(Vertex point)
+Point FarLighting::specularIntensity(Vertex point, Material mat)
 {
     Vertex specularIntensity;
-    specularIntensity[0] = this->r * material.ks[0];
-    specularIntensity[1] = this->g * material.ks[1];
-    specularIntensity[2] = this->b * material.ks[2];
+    specularIntensity[0] = this->r * mat.ks[0];
+    specularIntensity[1] = this->g * mat.ks[1];
+    specularIntensity[2] = this->b * mat.ks[2];
     specularIntensity = specularIntensity * this->specularFactor(point);
     return specularIntensity;
-};*/
+};
 
 void FarLighting::worldToCamera(Matrix worldToCamera)
 {
@@ -183,10 +201,10 @@ PointLighting::PointLighting(float r, float g, float b, Vertex position)
 float PointLighting::difuseFactor(Vertex point)
 {
     Vertex lightDirection = this->position - point;
-    Vertex normal = point.normal();
+    Vertex normal = this->position.normalized(); /*<<<<<<<<NÃO È ISSO*/
     float difuseFactor = lightDirection.dot(normal);
 
-    if (difuseFactor > 0)
+    if (difuseFactor >= 0)
     {
         return difuseFactor;
     }
@@ -199,17 +217,17 @@ float PointLighting::difuseFactor(Vertex point)
 /*double check*/
 float PointLighting::specularFactor(Vertex point)
 {
-    Vertex p = point - this->position;
+    Vertex p = this->position - point;
     Vertex l = p.normalized();
 
-    Vertex normal = point.normal();
+    Vertex normal = this->position.normalized(); /*<<<<<<<<NÃO È ISSO*/
 
     Vertex r = (2 * ((l).dot(normal)) * normal) - l;
-    Vertex v = point - Vertex(0, 0, 0, 0);
+    Vertex v = Vertex(0, 0, 0, 0) - point;
 
     float specularFactor = v.normalized().dot(r.normalized());
 
-    if (specularFactor > 0)
+    if (specularFactor >= 0)
     {
         return specularFactor;
     }
@@ -220,24 +238,24 @@ float PointLighting::specularFactor(Vertex point)
 };
 
 /*need to implement materials*/
-Vertex PointLighting::difuseIntensity(Vertex point)
+Point PointLighting::difuseIntensity(Vertex point, Material mat)
 {
     Vertex difuseIntensity;
-    difuseIntensity[0] = this->r * material.kd[0];
-    difuseIntensity[1] = this->g * material.kd[1];
-    difuseIntensity[2] = this->b * material.kd[2];
+    difuseIntensity[0] = this->r * mat.kd[0];
+    difuseIntensity[1] = this->g * mat.kd[1];
+    difuseIntensity[2] = this->b * mat.kd[2];
 
     difuseIntensity = difuseIntensity * this->difuseFactor(point);
     return difuseIntensity;
 };
 
-Vertex PointLighting::specularIntensity(Vertex point)
+Point PointLighting::specularIntensity(Vertex point, Material mat)
 {
     Vertex specularIntensity;
-    specularIntensity[0] = this->r * material.ks[0];
-    specularIntensity[1] = this->g * material.ks[1];
-    specularIntensity[2] = this->b * material.ks[2];
-    specularIntensity = specularIntensity * pow(this->specularFactor(point), material.shininess);
+    specularIntensity[0] = this->r * mat.ks[0];
+    specularIntensity[1] = this->g * mat.ks[1];
+    specularIntensity[2] = this->b * mat.ks[2];
+    specularIntensity = specularIntensity * pow(this->specularFactor(point), mat.shininess);
     return specularIntensity;
 };
 

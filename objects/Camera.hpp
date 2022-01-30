@@ -8,7 +8,6 @@ class Camera {
         Vertex k;
         Vertex i;
         Vertex j;
-
         Camera();
         Camera(Vertex eye, Vertex lookAt, Vertex viewUp);
         Matrix worldToCamera();
