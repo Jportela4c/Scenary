@@ -101,13 +101,13 @@ Point SpotLighting::specularIntensity(Vertex point, Material mat)
     return specular_intensity;
 };
 
-void SpotLighting::worldToCamera(Matrix worldToCamera)
+void SpotLighting::setCameraCoordinates(Matrix worldToCamera)
 {
     this->position = worldToCamera * this->position;
     this->direction = worldToCamera * this->direction;
 };
 
-void SpotLighting::cameraToWorld(Matrix cameraToWorld)
+void SpotLighting::setWorldCoordinates(Matrix cameraToWorld)
 {
     this->position = cameraToWorld * this->position;
     this->direction = cameraToWorld * this->direction;
@@ -178,12 +178,12 @@ Point FarLighting::specularIntensity(Vertex point, Material mat)
     return specularIntensity;
 };
 
-void FarLighting::worldToCamera(Matrix worldToCamera)
+void FarLighting::setCameraCoordinates(Matrix worldToCamera)
 {
     this->direction = worldToCamera * this->direction;
 };
 
-void FarLighting::cameraToWorld(Matrix cameraToWorld)
+void FarLighting::setWorldCoordinates(Matrix cameraToWorld)
 {
     this->direction = cameraToWorld * this->direction;
 };
@@ -259,12 +259,12 @@ Point PointLighting::specularIntensity(Vertex point, Material mat)
     return specularIntensity;
 };
 
-void PointLighting::worldToCamera(Matrix worldToCamera)
+void PointLighting::setCameraCoordinates(Matrix worldToCamera)
 {
     this->position = worldToCamera * this->position;
 };
 
-void PointLighting::cameraToWorld(Matrix cameraToWorld)
+void PointLighting::setWorldCoordinates(Matrix cameraToWorld)
 {
     this->position = cameraToWorld * this->position;
 };

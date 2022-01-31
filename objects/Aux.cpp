@@ -1,7 +1,5 @@
 #include "Aux.hpp"
 
-Shape::Shape(){};
-
 Material::Material(){};
 Material::Material(Point ka, Point kd, Point ks, float shininess)
 {

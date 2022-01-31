@@ -2,7 +2,13 @@
 
 class Lighting
 {
-    
+    public:
+    virtual void setCameraCoordinates(Matrix worldToCamera);
+    virtual void setWorldCoordinates(Matrix cameraToWorld);
+    virtual float difuseFactor(Vertex point);
+    virtual float specularFactor(Vertex point);
+    virtual Point difuseIntensity(Vertex point, Material mat);
+    virtual Point specularIntensity(Vertex point, Material mat);
 };
 
 class AmbientLighting: public Lighting
@@ -31,8 +37,8 @@ class SpotLighting: public Lighting
         float specularFactor(Vertex point);
         Point difuseIntensity(Vertex point, Material mat);
         Point specularIntensity(Vertex point, Material mat);
-        void worldToCamera(Matrix worldToCamera);
-        void cameraToWorld(Matrix cameraToWorld);
+        void setCameraCoordinates(Matrix worldToCamera);
+        void setWorldCoordinates(Matrix cameraToWorld);
 };
 
 class FarLighting: public Lighting
@@ -48,8 +54,8 @@ class FarLighting: public Lighting
         float specularFactor(Vertex point);
         Point difuseIntensity(Vertex point, Material mat);
         Point specularIntensity(Vertex point, Material mat);
-        void worldToCamera(Matrix worldToCamera);
-        void cameraToWorld(Matrix cameraToWorld);
+        void setCameraCoordinates(Matrix worldToCamera);
+        void setWorldCoordinates(Matrix cameraToWorld);
 };
 
 class PointLighting: public Lighting
@@ -65,6 +71,6 @@ class PointLighting: public Lighting
         float specularFactor(Vertex point);
         Point difuseIntensity(Vertex point, Material mat);
         Point specularIntensity(Vertex point, Material mat);
-        void worldToCamera(Matrix worldToCamera);
-        void cameraToWorld(Matrix cameraToWorld);
+        void setCameraCoordinates(Matrix worldToCamera);
+        void setWorldCoordinates(Matrix cameraToWorld);
 };
