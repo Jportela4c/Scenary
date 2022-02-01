@@ -4,6 +4,9 @@
 #include <vector>
 #include <numeric>
 
+#define HEIGHT 500
+#define WIDTH 500
+#define BG Point(0, 0, 0)
 
 
 using namespace std;
@@ -11,7 +14,7 @@ using namespace std;
 typedef Eigen::Vector3f Point;
 typedef Eigen::Vector4f Vertex;
 typedef Eigen::Matrix4f Matrix;
-typedef Eigen::Matrix<Point, 500, 500> Grid;
+typedef Eigen::Matrix<Point, HEIGHT, WIDTH> Grid;
 
 class Shape
 {
@@ -20,6 +23,7 @@ class Shape
         virtual void setCameraCoordinates(Matrix worldToCamera);
         virtual void setWorldCoordinates(Matrix cameraToWorld);
         virtual Vertex rayIntercect(Vertex rayOrigin, Vertex rayDirection);
+        virtual Vertex normal(Vertex point);
 };
 
 class Material
@@ -47,4 +51,5 @@ class Face {
     Vertex normal;
     Vertex planeIntersection(Vertex rayOrigin, Vertex rayDirection);
     Vertex rayIntersection(Vertex rayOrigin, Vertex rayDirection);
+    Vertex getNormal();
 };

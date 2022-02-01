@@ -81,3 +81,8 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
         return planeIntersection;
     }
 };
+
+Vertex Face::getNormal()
+{
+    return this->normal;
+};

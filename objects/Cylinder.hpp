@@ -17,4 +17,5 @@ class Cylinder : public Shape
         Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
         Vertex planeIntersectBase(Vertex rayOrigin, Vertex rayDirection);
         Vertex planeIntersectTop(Vertex rayOrigin, Vertex rayDirection);
+        Vertex normal(Vertex point);
 };

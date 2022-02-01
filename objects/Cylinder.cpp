@@ -165,3 +165,16 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
         
     }
 };
+
+Vertex Cylinder::normal(Vertex point)
+{
+    Vertex pointToCenter = point - this->center_base;
+    float val = pointToCenter.dot(this->axis);
+    Vertex a = this->axis * val;
+
+    Vertex v = this->center_base + a;
+    Vertex normal = point - v;
+    normal = normal/this->radius;
+
+    return normal;
+}

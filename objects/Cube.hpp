@@ -18,8 +18,11 @@ class Cube: public Shape
         Vertex v8;
         Vertex vertices[8];
         Face faces[12];
+        Vertex normal_intersect;
         void applyTransform(Matrix transform);
         void setCameraCoordinates(Matrix worldToCamera);
         void setWorldCoordinates(Matrix cameraToWorld);
         Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
+        void setNormal(Vertex intersect);
+        Vertex normal(Vertex point);
 };

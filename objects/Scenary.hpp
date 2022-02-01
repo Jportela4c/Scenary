@@ -9,7 +9,8 @@ class Scenary
         vector<Shape> shapes;    
         AmbientLighting ambientLight;
         vector<Lighting> lights;
-        Grid GRID;
+        Grid canvas;
+        Grid frame;
         Scenary();
         void addShape(Shape shape);
         void addLight(Lighting light);

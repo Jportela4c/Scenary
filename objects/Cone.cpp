@@ -184,3 +184,22 @@ Vertex Cone::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
             }
         }
 };
+
+Vertex Cone::normal(Vertex point)
+{
+    Vertex v= this->height * this->axis;
+    Vertex n  = this->center + v;
+    Vertex a = point - this->center;
+
+    float f = a.dot(this->axis);
+    Vertex p = this->center + f * this->axis;
+
+    Vertex a2 = point - p;
+    Vertex a3 = n - point;
+
+    Vertex T = a2.cross(a3);
+    Vertex N = a3.cross(T);
+
+    return N.normalized();
+
+};

@@ -56,4 +56,10 @@ Vertex Sphere::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
             return intersection;
         }
     }
-}
+};
+
+Vertex Sphere::normal(Vertex point)
+{
+    Vertex normal = (point - this->center).normalized();
+    return normal;
+};

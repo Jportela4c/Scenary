@@ -12,4 +12,5 @@ class Sphere: public Shape
         void setCameraCoordinates(Matrix worldToCamera);
         void setWorldCoordinates(Matrix cameraToWorld);
         Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
+        Vertex normal(Vertex point);
 };

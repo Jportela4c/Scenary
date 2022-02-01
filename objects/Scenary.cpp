@@ -49,28 +49,34 @@ void Scenary::rayCasting()
     Vertex intersect;
     for (int i = 0; i < this->shapes.size(); i++)
     {
-        for (int j = 0; j < this->GRID.rows(); j++)
+        for (int j = 0; j < this->canvas.rows(); j++)
         {
-            for (int k = 0; k < this->GRID.cols(); k++)
+            for (int k = 0; k < this->canvas.cols(); k++)
             {
                 Vertex rayOrigin = this->camera.eye;
-                Vertex rayDirection = this->GRID(j, k) - rayOrigin;
+                Vertex rayDirection = this->canvas(j, k) - rayOrigin;
                 intersect = this->shapes[i].rayIntercect(rayOrigin, rayDirection);
                 if (intersect[3] != -1)
                 {
                     Point intensity = this->ambientLight.ambientIntensity(intersect, this->shapes[i].mat);
+                    Vertex intersect_point = Vertex(0,0,0,0);
+                    intersect_point[0] = this->canvas(j, k)[0];
+                    intersect_point[1] = this->canvas(j, k)[1];
+                    intersect_point[2] = this->canvas(j, k)[2];
+                    intersect_point[3] = 1;
                     for (int l = 0; l < this->lights.size(); l++)
                     {
-                        intensity += this->lights[l].difuseIntensity(intersect, this->shapes[i].mat);
-                        intensity += this->lights[l].specularIntensity(intersect, this->shapes[i].mat);
+
+                        intensity += this->lights[l].difuseIntensity(intersect, this->shapes[i].normal(intersect_point), this->shapes[i].mat);
+                        intensity += this->lights[l].specularIntensity(intersect, this->shapes[i].normal(intersect_point), this->shapes[i].mat);
                     }
-                    this->GRID(j, k)[0] = intensity[0];
-                    this->GRID(j, k)[1] = intensity[1];
-                    this->GRID(j, k)[2] = intensity[2];
+                    this->frame(j, k)[0] = intensity[0];
+                    this->frame(j, k)[1] = intensity[1];
+                    this->frame(j, k)[2] = intensity[2];
                 }
                 else
                 {
-                    this->GRID(j, k) = Vertex(-1, -1, -1); /*colocar aqui a cor do background*/
+                    this->frame(j, k) = BG; /*colocar aqui a cor do background*/
                 }
             }
         }

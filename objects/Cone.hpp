@@ -17,4 +17,5 @@ class Cone: public Shape
         void setWorldCoordinates(Matrix cameraToWorld);
         Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
         Vertex planeIntersectBase(Vertex rayOrigin, Vertex rayDirection);
+        Vertex normal(Vertex point);
 };

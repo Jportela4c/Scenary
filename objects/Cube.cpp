@@ -36,6 +36,8 @@ Cube::Cube(float side, Vertex  center, Material mat): s(side), c(center), mat(ma
     faces[7] = Face(vertices[3], vertices[0], vertices[4]);
     faces[8] = Face(vertices[5], vertices[4], vertices[0]);
 
+    this->normal_intersect = Vertex(0, 0, 0, -1);
+
 }
 
 void Cube::applyTransform(Matrix transform)
@@ -62,13 +64,17 @@ void Cube::setWorldCoordinates(Matrix cameraToWorld)
     }
 }
 
+void Cube::setNormal(Vertex intersect)
+{
+    this->normal_intersect = intersect;
+}
+
 Vertex Cube::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
 {
     float distance = MAXFLOAT;
     Vertex closest_intersection = Vertex(0,0,0,-1);
     for (int i = 0; i < 12; i++)
     {
-        
         Face face = this->faces[i];
         Vertex intersection = face.rayIntersection(rayOrigin, rayDirection);
         float intersectionDistance = sqrt(pow(intersection[0] - rayOrigin[0], 2) + pow(intersection[1] - rayOrigin[1], 2) + pow(intersection[2] - rayOrigin[2], 2));
@@ -76,7 +82,13 @@ Vertex Cube::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
         {
             distance = intersectionDistance;
             closest_intersection = intersection;
+            setNormal(face.getNormal());
         }
     }
     return closest_intersection;
+};
+
+Vertex Cube::normal(Vertex point)
+{
+    return this->normal_intersect;
 }
