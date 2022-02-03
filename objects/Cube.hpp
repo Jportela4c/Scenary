@@ -25,4 +25,5 @@ class Cube: public Shape
         Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
         void setNormal(Vertex intersect);
         Vertex normal(Vertex point);
+        Vertex Bounds();
 };

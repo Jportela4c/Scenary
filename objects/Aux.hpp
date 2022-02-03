@@ -3,6 +3,7 @@
 #include <cmath>
 #include <vector>
 #include <numeric>
+#include <limits>
 
 #define HEIGHT 500
 #define WIDTH 500
@@ -16,16 +17,6 @@ typedef Eigen::Vector4f Vertex;
 typedef Eigen::Matrix4f Matrix;
 typedef Eigen::Matrix<Point, HEIGHT, WIDTH> Grid;
 
-class Shape
-{
-    public:
-        Material mat;
-        virtual void setCameraCoordinates(Matrix worldToCamera);
-        virtual void setWorldCoordinates(Matrix cameraToWorld);
-        virtual Vertex rayIntercect(Vertex rayOrigin, Vertex rayDirection);
-        virtual Vertex normal(Vertex point);
-};
-
 class Material
 {
     public:
@@ -35,6 +26,17 @@ class Material
         float shininess;
         Material();
         Material(Point ka, Point kd, Point ks, float shininess);
+};
+
+class Shape
+{
+    public:
+        Material mat;
+        virtual void setCameraCoordinates(Matrix worldToCamera);
+        virtual void setWorldCoordinates(Matrix cameraToWorld);
+        virtual Vertex rayIntercect(Vertex rayOrigin, Vertex rayDirection);
+        virtual Vertex normal(Vertex point);
+        virtual Vertex Bounds();
 };
 
 class Face {
@@ -52,4 +54,10 @@ class Face {
     Vertex planeIntersection(Vertex rayOrigin, Vertex rayDirection);
     Vertex rayIntersection(Vertex rayOrigin, Vertex rayDirection);
     Vertex getNormal();
+};
+
+class Cluster
+{
+    public:
+    vector<Shape> shapes;
 };

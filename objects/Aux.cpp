@@ -10,9 +10,9 @@ Material::Material(Point ka, Point kd, Point ks, float shininess)
 };
 
 Face::Face(){
-    v1 = Vertex(0,0,0,1);
-    v2 = Vertex(0,0,0,1);
-    v3 = Vertex(0,0,0,1);
+    v1 = Vertex(0.0,0.0,0.0,1.0);
+    v2 = Vertex(0.0,0.0,0.0,1.0);
+    v3 = Vertex(0.0,0.0,0.0,1.0);
 };
 
 Face::Face(Vertex vertex1, Vertex vertex2, Vertex vertex3): v1(vertex1), v2(vertex2), v3(vertex3)
@@ -28,7 +28,12 @@ Face::Face(Vertex vertex1, Vertex vertex2, Vertex vertex3): v1(vertex1), v2(vert
     v1v3[3] = 1;
     v2v3[3] = 1;
     v3v1[3] = 1;
-    this->normal = (v1v2.cross(v1v3)).normalized();
+
+    Eigen::Vector3f v1v3n = Eigen::Vector3f(v1v3[0], v1v3[1], v1v3[2]);
+    Eigen::Vector3f v1v2n = Eigen::Vector3f(v1v2[0], v1v2[1], v1v2[2]);
+    Eigen::Vector3f normal = (v1v3n.cross(v1v2n)).normalized();
+
+    this->normal = Vertex(normal[0], normal[1], normal[2], 1.0);
 }
 
 Vertex Face::planeIntersection(Vertex rayOrigin, Vertex rayDirection)
@@ -64,15 +69,24 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     Vertex pv2 = planeIntersection - this->v2;
     Vertex pv3 = planeIntersection - this->v3;
 
-    if (pv1.cross(this->v1v2).dot((this->v1v3).cross(this->v1v2)) < 0)
+    Eigen::Vector3f pv1n = Eigen::Vector3f(pv1[0], pv1[1], pv1[2]);
+    Eigen::Vector3f pv2n = Eigen::Vector3f(pv2[0], pv2[1], pv2[2]);
+    Eigen::Vector3f pv3n = Eigen::Vector3f(pv3[0], pv3[1], pv3[2]);
+
+    Eigen::Vector3f v1v2n = Eigen::Vector3f(this->v1v2[0], this->v1v2[1], this->v1v2[2]);
+    Eigen::Vector3f v1v3n = Eigen::Vector3f(this->v1v3[0], this->v1v3[1], this->v1v3[2]);
+    Eigen::Vector3f v2v3n = Eigen::Vector3f(this->v2v3[0], this->v2v3[1], this->v2v3[2]);
+    Eigen::Vector3f v3v1n = Eigen::Vector3f(this->v3v1[0], this->v3v1[1], this->v3v1[2]);
+
+    if (pv1n.cross(v1v2n).dot((v1v3n).cross(v1v2n)) < 0)
     {
         return Vertex(0,0,0,-1);
     }
-    else if (pv2.cross(this->v2v3).dot((this->v1v3).cross(this->v1v2)) < 0)
+    else if (pv2n.cross(v2v3n).dot((v1v3n).cross(v1v2n)) < 0)
     {
         return Vertex(0,0,0,-1);
     }
-    else if (pv3.cross(this->v3v1).dot((this->v1v3).cross(this->v1v2)) < 0)
+    else if (pv3n.cross(v3v1n).dot((v1v3n).cross(v1v2n)) < 0)
     {
         return Vertex(0,0,0,-1);
     }

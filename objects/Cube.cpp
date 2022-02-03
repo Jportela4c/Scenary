@@ -92,3 +92,36 @@ Vertex Cube::normal(Vertex point)
 {
     return this->normal_intersect;
 }
+
+Vertex Cube::Bounds()
+{
+    Vertex minBounds = Vertex(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max(), 1);
+    Vertex maxBounds = Vertex(numeric_limits<float>::min(),numeric_limits<float>::min(),numeric_limits<float>::min(), 1);
+    for(int i = 0; i < 8; i++)
+    {
+        if(vertices[i][0] > maxBounds[0])
+        {
+            maxBounds[0] = vertices[i][0];
+        }
+        if(vertices[i][1] > maxBounds[1])
+        {
+            maxBounds[1] = vertices[i][1];
+        }
+        if(vertices[i][2] > maxBounds[2])
+        {
+            maxBounds[2] = vertices[i][2];
+        }
+        if(vertices[i][0] < minBounds[0])
+        {
+            minBounds[0] = vertices[i][0];
+        }
+        if(vertices[i][1] < minBounds[1])
+        {
+            minBounds[1] = vertices[i][1];
+        }
+        if(vertices[i][2] < minBounds[2])
+        {
+            minBounds[2] = vertices[i][2];
+        }
+    }
+}
