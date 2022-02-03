@@ -124,4 +124,6 @@ Vertex Cube::Bounds()
             minBounds[2] = vertices[i][2];
         }
     }
+
+    return maxBounds;
 }

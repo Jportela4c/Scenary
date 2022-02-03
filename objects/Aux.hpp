@@ -32,11 +32,12 @@ class Shape
 {
     public:
         Material mat;
-        virtual void setCameraCoordinates(Matrix worldToCamera);
-        virtual void setWorldCoordinates(Matrix cameraToWorld);
-        virtual Vertex rayIntercect(Vertex rayOrigin, Vertex rayDirection);
-        virtual Vertex normal(Vertex point);
-        virtual Vertex Bounds();
+        void setCameraCoordinates(Matrix worldToCamera);
+        void setWorldCoordinates(Matrix cameraToWorld);
+        Vertex rayIntercect(Vertex rayOrigin, Vertex rayDirection);
+        Vertex normal(Vertex point);
+        Vertex Bounds();
+        Shape();
 };
 
 class Face {

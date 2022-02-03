@@ -8,8 +8,15 @@ Camera::Camera(Vertex eye, Vertex lookAt, Vertex viewUp)
     this->viewUp = viewUp;
 
     k = (eye - lookAt).normalized();
-    i = (viewUp.cross(k)).normalized();
-    j = k.cross(i);
+
+    Point kn = Point(k[0], k[1], k[2]);
+    Point vn = Point(viewUp[0], viewUp[1], viewUp[2]);
+    Point in = (vn.cross(kn)).normalized();
+    Point jn = (kn.cross(in)).normalized();
+
+    i = Vertex(in[0], in[1], in[2], 1.0);
+    j = Vertex(jn[0], jn[1], jn[2], 1.0);
+
 };
 
 Matrix Camera::worldToCamera()
@@ -33,8 +40,14 @@ Matrix Camera::cameraToWorld(){
 
 void Camera::update(){
     k = (eye - lookAt).normalized();
-    i = (viewUp.cross(k)).normalized();
-    j = k.cross(i);
+
+    Point kn = Point(k[0], k[1], k[2]);
+    Point vn = Point(viewUp[0], viewUp[1], viewUp[2]);
+    Point in = (vn.cross(kn)).normalized();
+    Point jn = (kn.cross(in)).normalized();
+
+    i = Vertex(in[0], in[1], in[2], 1.0);
+    j = Vertex(jn[0], jn[1], jn[2], 1.0);
 };
 
 void Camera::moveX(float x)

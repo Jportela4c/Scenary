@@ -1,6 +1,8 @@
 #include "Scenary.hpp"
 
-Scenary::Scenary() {};
+Scenary::Scenary(){
+
+};
 
 void Scenary::addShape(Shape shape) 
 {
@@ -54,7 +56,9 @@ void Scenary::rayCasting()
             for (int k = 0; k < this->canvas.cols(); k++)
             {
                 Vertex rayOrigin = this->camera.eye;
-                Vertex rayDirection = this->canvas(j, k) - rayOrigin;
+                Point rayOriginp = Point(rayOrigin[0], rayOrigin[1], rayOrigin[2]);
+                Point rayDirectionp = this->canvas(j, k) - rayOriginp;
+                Vertex rayDirection = Vertex(rayDirectionp[0], rayDirectionp[1], rayDirectionp[2], 1.0);
                 intersect = this->shapes[i].rayIntercect(rayOrigin, rayDirection);
                 if (intersect[3] != -1)
                 {

@@ -9,6 +9,13 @@ Material::Material(Point ka, Point kd, Point ks, float shininess)
     this->shininess = shininess;
 };
 
+Shape::Shape(){};
+Vertex Shape::Bounds(){return Vertex(0, 0, 0, -1);};
+Vertex Shape::rayIntercect(Vertex rayOrigin, Vertex rayDirection){return Vertex(0, 0, 0, -1);};
+Vertex Shape::normal(Vertex point){return Vertex(0, 0, 0, -1);};
+void Shape::setCameraCoordinates(Matrix worldToCamera){};
+void Shape::setWorldCoordinates(Matrix camreToWolrd){};
+
 Face::Face(){
     v1 = Vertex(0.0,0.0,0.0,1.0);
     v2 = Vertex(0.0,0.0,0.0,1.0);

@@ -197,8 +197,13 @@ Vertex Cone::normal(Vertex point)
     Vertex a2 = point - p;
     Vertex a3 = n - point;
 
-    Vertex T = a2.cross(a3);
-    Vertex N = a3.cross(T);
+    Point a2n = Point(a2[0], a2[1], a2[2]);
+    Point a3n = Point(a3[0], a3[1], a3[2]);
+
+    Point Tn = a2n.cross(a3n);
+    Point Nn = a3n.cross(Tn);
+
+    Vertex N = Vertex(Nn[0], Nn[1], Nn[2], 1.0);
 
     return N.normalized();
 
