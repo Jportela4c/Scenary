@@ -25,7 +25,7 @@ void Sphere::setWorldCoordinates(Matrix cameraToWorld)
 
 Vertex Sphere::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
 {
-    Vertex rayOriginToCenter = rayOrigin - this->center;
+    Vertex rayOriginToCenter = this->center - rayOrigin;
     rayOriginToCenter[3] = 1;
     float a = rayDirection.dot(rayDirection);
     float b = rayDirection.dot(rayOriginToCenter);

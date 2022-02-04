@@ -10,7 +10,7 @@ class Scenary
         AmbientLighting ambientLight;
         vector<Lighting> lights;
         Grid canvas;
-        Grid frame;
+        float frame[HEIGHT*WIDTH*3];
         Scenary();
         void addShape(Shape shape);
         void addLight(Lighting light);

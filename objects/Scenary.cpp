@@ -74,13 +74,17 @@ void Scenary::rayCasting()
                         intensity += this->lights[l].difuseIntensity(intersect, this->shapes[i].normal(intersect_point), this->shapes[i].mat);
                         intensity += this->lights[l].specularIntensity(intersect, this->shapes[i].normal(intersect_point), this->shapes[i].mat);
                     }
-                    this->frame(j, k)[0] = intensity[0];
-                    this->frame(j, k)[1] = intensity[1];
-                    this->frame(j, k)[2] = intensity[2];
+                    int position = k*3*WIDTH+j*3;
+                    this->frame[position] = intensity[0];
+                    this->frame[position+1] = intensity[1];
+                    this->frame[position+2] = intensity[2];
                 }
                 else
                 {
-                    this->frame(j, k) = BG; /*colocar aqui a cor do background*/
+                    int position = k*3*WIDTH+j*3;
+                    this->frame[position] = BG[0];
+                    this->frame[position+1] = BG[1];
+                    this->frame[position+2] = BG[2];
                 }
             }
         }
