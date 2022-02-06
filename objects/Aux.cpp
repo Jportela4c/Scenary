@@ -85,8 +85,10 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     Point v2v3n = Point(this->v2v3[0], this->v2v3[1], this->v2v3[2]);
     Point v3v1n = Point(this->v3v1[0], this->v3v1[1], this->v3v1[2]);
 
-    float e = (pv1n.cross(pv2n)).dot(this->normal);
-    float f = (pv2n.cross(pv3n)).dot(this->normal);
+    Point normaln = Point(this->normal[0], this->normal[1], this->normal[2]);
+
+    float e = (pv1n.cross(pv2n)).dot(normaln);
+    float f = (pv2n.cross(pv3n)).dot(normaln);
     float s = 1 - e - f;
     if (e < 0)
     {

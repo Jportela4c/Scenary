@@ -3,26 +3,17 @@
 Cube::Cube(){};
 Cube::Cube(float side, Vertex  center, Material mat): s(side), c(center), mat(mat)
 {
-    float s = side;
+    float s = side/2;
     Vertex c = center;
-    Vertex v0 = Vertex(c[0] - s/2, c[1] + s/2, c[2] + s/2, 1);
-    Vertex v1 = Vertex(c[0] - s/2, c[1] + s/2, c[2] - s/2, 1);
-    Vertex v2 = Vertex(c[0] + s/2, c[1] + s/2, c[2] - s/2, 1);
-    Vertex v3 = Vertex(c[0] + s/2, c[1] + s/2, c[2] + s/2, 1);
-    Vertex v4 = Vertex(c[0] - s/2, c[1] - s/2, c[2] + s/2, 1);
-    Vertex v5 = Vertex(c[0] - s/2, c[1] - s/2, c[2] - s/2, 1);
-    Vertex v6 = Vertex(c[0] + s/2, c[1] - s/2, c[2] - s/2, 1);
-    Vertex v7 = Vertex(c[0] + s/2, c[1] - s/2, c[2] + s/2, 1);
-    
-    this->vertices[0] = v0;
-    this->vertices[1] = v1;
-    this->vertices[2] = v2;
-    this->vertices[3] = v3;
-    this->vertices[4] = v4;
-    this->vertices[5] = v5;
-    this->vertices[6] = v6;
-    this->vertices[7] = v7;
-    
+    this->vertices[0] = Vertex(c[0] - s, c[1] + s, c[2] + s, 1);
+    this->vertices[1] = Vertex(c[0] - s, c[1] + s, c[2] - s, 1);
+    this->vertices[2] = Vertex(c[0] + s, c[1] + s, c[2] - s, 1);
+    this->vertices[3] = Vertex(c[0] + s, c[1] + s, c[2] + s, 1);
+    this->vertices[4] = Vertex(c[0] - s, c[1] - s, c[2] + s, 1);
+    this->vertices[5] = Vertex(c[0] - s, c[1] - s, c[2] - s, 1);
+    this->vertices[6] = Vertex(c[0] + s, c[1] - s, c[2] - s, 1);
+    this->vertices[7] = Vertex(c[0] + s, c[1] - s, c[2] + s, 1);
+
     this->faces[0] = Face(this->vertices[2], this->vertices[3], this->vertices[7]);
     this->faces[1] = Face(this->vertices[2], this->vertices[7], this->vertices[6]);
     this->faces[2] = Face(this->vertices[2], this->vertices[1], this->vertices[0]);
@@ -35,7 +26,6 @@ Cube::Cube(float side, Vertex  center, Material mat): s(side), c(center), mat(ma
     this->faces[9] = Face(this->vertices[4], this->vertices[5], this->vertices[6]);
     this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
     this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
-
 
     this->normal_intersect = Vertex(0, 0, 0, -1);
 
