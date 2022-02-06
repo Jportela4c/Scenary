@@ -22,15 +22,15 @@ Face::Face(){
     v3 = Vertex(0.0,0.0,0.0,1.0);
 };
 
-Face::Face(Vertex vertex1, Vertex vertex2, Vertex vertex3): v1(vertex1), v2(vertex2), v3(vertex3)
+Face::Face(Vertex vertex1, Vertex vertex2, Vertex vertex3)
 {
     this->v1 = v1;
     this->v2 = v2;
     this->v3 = v3;
-    this->v1v2 = v2 - v1;
-    this->v1v3 = v3 - v1;
-    this->v2v3 = v3 - v2;
-    this->v3v1 = v1 - v3;
+    this->v1v2 = this->v2 - this->v1;
+    this->v1v3 = this->v3 - this->v1;
+    this->v2v3 = this->v3 - this->v2;
+    this->v3v1 = this->v1 - this->v3;
     v1v2[3] = 1;
     v1v3[3] = 1;
     v2v3[3] = 1;
@@ -72,9 +72,9 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     {
         return Vertex(0,0,0,-1);
     }
-    Vertex pv1 = planeIntersection - this->v1;
-    Vertex pv2 = planeIntersection - this->v2;
-    Vertex pv3 = planeIntersection - this->v3;
+    Vertex pv1 = this->v1 - planeIntersection;
+    Vertex pv2 = this->v2 - planeIntersection;
+    Vertex pv3 = this->v3 - planeIntersection;
 
     Point pv1n = Point(pv1[0], pv1[1], pv1[2]);
     Point pv2n = Point(pv2[0], pv2[1], pv2[2]);
@@ -85,15 +85,18 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     Point v2v3n = Point(this->v2v3[0], this->v2v3[1], this->v2v3[2]);
     Point v3v1n = Point(this->v3v1[0], this->v3v1[1], this->v3v1[2]);
 
-    if (pv1n.cross(v1v2n).dot((v1v3n).cross(v1v2n)) < 0)
+    float e = (pv1n.cross(pv2n)).dot(this->normal);
+    float f = (pv2n.cross(pv3n)).dot(this->normal);
+    float s = 1 - e - f;
+    if (e < 0)
     {
         return Vertex(0,0,0,-1);
     }
-    else if (pv2n.cross(v2v3n).dot((v1v3n).cross(v1v2n)) < 0)
+    else if (f < 0)
     {
         return Vertex(0,0,0,-1);
     }
-    else if (pv3n.cross(v3v1n).dot((v1v3n).cross(v1v2n)) < 0)
+    else if (s < 0)
     {
         return Vertex(0,0,0,-1);
     }
