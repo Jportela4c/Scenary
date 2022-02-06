@@ -27,18 +27,18 @@ Face::Face(Vertex vertex1, Vertex vertex2, Vertex vertex3): v1(vertex1), v2(vert
     this->v1 = v1;
     this->v2 = v2;
     this->v3 = v3;
-    Vertex v1v2 = v2 - v1;
-    Vertex v1v3 = v3 - v1;
-    Vertex v2v3 = v3 - v2;
-    Vertex v3v1 = v1 - v3;
+    this->v1v2 = v2 - v1;
+    this->v1v3 = v3 - v1;
+    this->v2v3 = v3 - v2;
+    this->v3v1 = v1 - v3;
     v1v2[3] = 1;
     v1v3[3] = 1;
     v2v3[3] = 1;
     v3v1[3] = 1;
 
-    Eigen::Vector3f v1v3n = Eigen::Vector3f(v1v3[0], v1v3[1], v1v3[2]);
-    Eigen::Vector3f v1v2n = Eigen::Vector3f(v1v2[0], v1v2[1], v1v2[2]);
-    Eigen::Vector3f normal = (v1v3n.cross(v1v2n)).normalized();
+    Point v1v3n = Point(v1v3[0], v1v3[1], v1v3[2]);
+    Point v1v2n = Point(v1v2[0], v1v2[1], v1v2[2]);
+    Point normal = (v1v3n.cross(v1v2n)).normalized();
 
     this->normal = Vertex(normal[0], normal[1], normal[2], 1.0);
 }
@@ -76,14 +76,14 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     Vertex pv2 = planeIntersection - this->v2;
     Vertex pv3 = planeIntersection - this->v3;
 
-    Eigen::Vector3f pv1n = Eigen::Vector3f(pv1[0], pv1[1], pv1[2]);
-    Eigen::Vector3f pv2n = Eigen::Vector3f(pv2[0], pv2[1], pv2[2]);
-    Eigen::Vector3f pv3n = Eigen::Vector3f(pv3[0], pv3[1], pv3[2]);
+    Point pv1n = Point(pv1[0], pv1[1], pv1[2]);
+    Point pv2n = Point(pv2[0], pv2[1], pv2[2]);
+    Point pv3n = Point(pv3[0], pv3[1], pv3[2]);
 
-    Eigen::Vector3f v1v2n = Eigen::Vector3f(this->v1v2[0], this->v1v2[1], this->v1v2[2]);
-    Eigen::Vector3f v1v3n = Eigen::Vector3f(this->v1v3[0], this->v1v3[1], this->v1v3[2]);
-    Eigen::Vector3f v2v3n = Eigen::Vector3f(this->v2v3[0], this->v2v3[1], this->v2v3[2]);
-    Eigen::Vector3f v3v1n = Eigen::Vector3f(this->v3v1[0], this->v3v1[1], this->v3v1[2]);
+    Point v1v2n = Point(this->v1v2[0], this->v1v2[1], this->v1v2[2]);
+    Point v1v3n = Point(this->v1v3[0], this->v1v3[1], this->v1v3[2]);
+    Point v2v3n = Point(this->v2v3[0], this->v2v3[1], this->v2v3[2]);
+    Point v3v1n = Point(this->v3v1[0], this->v3v1[1], this->v3v1[2]);
 
     if (pv1n.cross(v1v2n).dot((v1v3n).cross(v1v2n)) < 0)
     {

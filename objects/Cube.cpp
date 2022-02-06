@@ -3,38 +3,39 @@
 Cube::Cube(){};
 Cube::Cube(float side, Vertex  center, Material mat): s(side), c(center), mat(mat)
 {
-
-    Face faces[12];
-
     float s = side;
     Vertex c = center;
-    Vertex v1 = Vertex(c[0] - s/2, c[1] + s, c[2] + s/2, 1);
-    Vertex v2 = Vertex(c[0] - s/2, c[1] + s, c[2] - s/2, 1);
-    Vertex v3 = Vertex(c[0] + s/2, c[1] + s, c[2] - s/2, 1);
-    Vertex v4 = Vertex(c[0] + s/2, c[1] + s, c[2] + s/2, 1);
-    Vertex v5 = Vertex(c[0] - s/2, c[1], c[2] + s/2, 1);
-    Vertex v6 = Vertex(c[0] - s/2, c[1], c[2] - s/2, 1);
-    Vertex v7 = Vertex(c[0] + s/2, c[1], c[2] - s/2, 1);
-    Vertex v8 = Vertex(c[0] + s/2, c[1], c[2] + s/2, 1);
+    Vertex v0 = Vertex(c[0] - s/2, c[1] + s/2, c[2] + s/2, 1);
+    Vertex v1 = Vertex(c[0] - s/2, c[1] + s/2, c[2] - s/2, 1);
+    Vertex v2 = Vertex(c[0] + s/2, c[1] + s/2, c[2] - s/2, 1);
+    Vertex v3 = Vertex(c[0] + s/2, c[1] + s/2, c[2] + s/2, 1);
+    Vertex v4 = Vertex(c[0] - s/2, c[1] - s/2, c[2] + s/2, 1);
+    Vertex v5 = Vertex(c[0] - s/2, c[1] - s/2, c[2] - s/2, 1);
+    Vertex v6 = Vertex(c[0] + s/2, c[1] - s/2, c[2] - s/2, 1);
+    Vertex v7 = Vertex(c[0] + s/2, c[1] - s/2, c[2] + s/2, 1);
     
-    vertices[0] = v1;
-    vertices[1] = v2;
-    vertices[2] = v3;
-    vertices[3] = v4;
-    vertices[4] = v5;
-    vertices[5] = v6;
-    vertices[6] = v7;
-    vertices[7] = v8;
+    this->vertices[0] = v0;
+    this->vertices[1] = v1;
+    this->vertices[2] = v2;
+    this->vertices[3] = v3;
+    this->vertices[4] = v4;
+    this->vertices[5] = v5;
+    this->vertices[6] = v6;
+    this->vertices[7] = v7;
     
-    faces[0] = Face(vertices[0], vertices[3], vertices[2]);
-    faces[1] = Face(vertices[2], vertices[1], vertices[0]);
-    faces[2] = Face(vertices[6], vertices[5], vertices[2]);
-    faces[3] = Face(vertices[5], vertices[1], vertices[2]);
-    faces[4] = Face(vertices[7], vertices[6], vertices[3]);
-    faces[5] = Face(vertices[6], vertices[2], vertices[3]);
-    faces[6] = Face(vertices[4], vertices[7], vertices[3]);
-    faces[7] = Face(vertices[3], vertices[0], vertices[4]);
-    faces[8] = Face(vertices[5], vertices[4], vertices[0]);
+    this->faces[0] = Face(this->vertices[2], this->vertices[3], this->vertices[7]);
+    this->faces[1] = Face(this->vertices[2], this->vertices[7], this->vertices[6]);
+    this->faces[2] = Face(this->vertices[2], this->vertices[1], this->vertices[0]);
+    this->faces[3] = Face(this->vertices[2], this->vertices[0], this->vertices[3]);
+    this->faces[4] = Face(this->vertices[3], this->vertices[0], this->vertices[7]);
+    this->faces[5] = Face(this->vertices[0], this->vertices[4], this->vertices[7]);
+    this->faces[6] = Face(this->vertices[1], this->vertices[4], this->vertices[0]);
+    this->faces[7] = Face(this->vertices[1], this->vertices[5], this->vertices[4]);
+    this->faces[8] = Face(this->vertices[7], this->vertices[4], this->vertices[6]);
+    this->faces[9] = Face(this->vertices[4], this->vertices[5], this->vertices[6]);
+    this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
+    this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
+
 
     this->normal_intersect = Vertex(0, 0, 0, -1);
 
