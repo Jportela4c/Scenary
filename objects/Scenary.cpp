@@ -48,26 +48,23 @@ void Scenary::rayCasting()
 {
     this->setCameraCoordinates();
     this->setWorldCoordinates();
-    Vertex intersect;
+    Point intersect;
     for (int i = 0; i < this->shapes.size(); i++)
     {
         for (int j = 0; j < this->canvas.rows(); j++)
         {
             for (int k = 0; k < this->canvas.cols(); k++)
             {
-                Vertex rayOrigin = this->camera.eye;
-                Point rayOriginp = Point(rayOrigin[0], rayOrigin[1], rayOrigin[2]);
-                Point rayDirectionp = this->canvas(j, k) - rayOriginp;
-                Vertex rayDirection = Vertex(rayDirectionp[0], rayDirectionp[1], rayDirectionp[2], 1.0);
+                Point rayOrigin = this->camera.eye;
+                Point rayDirection = this->canvas(j, k) - rayOrigin;
                 intersect = this->shapes[i].rayIntercect(rayOrigin, rayDirection);
-                if (intersect[3] != -1)
+                if (intersect[3] != MAXFLOAT)
                 {
                     Point intensity = this->ambientLight.ambientIntensity(intersect, this->shapes[i].mat);
-                    Vertex intersect_point = Vertex(0,0,0,0);
+                    Point intersect_point = Point(0,0,0);
                     intersect_point[0] = this->canvas(j, k)[0];
                     intersect_point[1] = this->canvas(j, k)[1];
                     intersect_point[2] = this->canvas(j, k)[2];
-                    intersect_point[3] = 1;
                     for (int l = 0; l < this->lights.size(); l++)
                     {
 

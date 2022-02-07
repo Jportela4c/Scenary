@@ -1,21 +1,21 @@
 #include "Cube.hpp"
 
 Cube::Cube(){};
-Cube::Cube(float side, Vertex  center, Material mat)
+Cube::Cube(float side, Point  center, Material mat)
 {
     this->side = side;
     this->center = center;
     this->mat = mat;
 
     float s = this->side/2;
-    this->vertices[0] = Vertex(this->center[0] - s, this->center[1] + s, this->center[2] + s, 1);
-    this->vertices[1] = Vertex(this->center[0] - s, this->center[1] + s, this->center[2] - s, 1);
-    this->vertices[2] = Vertex(this->center[0] + s, this->center[1] + s, this->center[2] - s, 1);
-    this->vertices[3] = Vertex(this->center[0] + s, this->center[1] + s, this->center[2] + s, 1);
-    this->vertices[4] = Vertex(this->center[0] - s, this->center[1] - s, this->center[2] + s, 1);
-    this->vertices[5] = Vertex(this->center[0] - s, this->center[1] - s, this->center[2] - s, 1);
-    this->vertices[6] = Vertex(this->center[0] + s, this->center[1] - s, this->center[2] - s, 1);
-    this->vertices[7] = Vertex(this->center[0] + s, this->center[1] - s, this->center[2] + s, 1);
+    this->vertices[0] = Point(this->center[0] - s, this->center[1] + s, this->center[2] + s);
+    this->vertices[1] = Point(this->center[0] - s, this->center[1] + s, this->center[2] - s);
+    this->vertices[2] = Point(this->center[0] + s, this->center[1] + s, this->center[2] - s);
+    this->vertices[3] = Point(this->center[0] + s, this->center[1] + s, this->center[2] + s);
+    this->vertices[4] = Point(this->center[0] - s, this->center[1] - s, this->center[2] + s);
+    this->vertices[5] = Point(this->center[0] - s, this->center[1] - s, this->center[2] - s);
+    this->vertices[6] = Point(this->center[0] + s, this->center[1] - s, this->center[2] - s);
+    this->vertices[7] = Point(this->center[0] + s, this->center[1] - s, this->center[2] + s);
 
     this->faces[0] = Face(this->vertices[2], this->vertices[3], this->vertices[7]);
     this->faces[1] = Face(this->vertices[2], this->vertices[7], this->vertices[6]);
@@ -30,7 +30,7 @@ Cube::Cube(float side, Vertex  center, Material mat)
     this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
     this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
 
-    this->normal_intersect = Vertex(0, 0, 0, -1);
+    this->normal_intersect = Point(0,0,0);
 
 }
 
@@ -49,7 +49,7 @@ void Cube::updateFaces()
     this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
     this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
 }
-
+//Utilizar Vertex
 void Cube::applyTransform(Matrix transform)
 {
     this->center = transform * this->center;
@@ -59,7 +59,7 @@ void Cube::applyTransform(Matrix transform)
     }
     updateFaces();
 }
-
+//Utilizar Vertex
 void Cube::setCameraCoordinates(Matrix worldToCamera)
 {
     this->center = worldToCamera * this->center;
@@ -69,7 +69,7 @@ void Cube::setCameraCoordinates(Matrix worldToCamera)
     }
     updateFaces();
 }
-
+//Utilizar Vertex
 void Cube::setWorldCoordinates(Matrix cameraToWorld)
 {
     this->center = cameraToWorld * this->center;
@@ -80,21 +80,21 @@ void Cube::setWorldCoordinates(Matrix cameraToWorld)
     updateFaces();
 }
 
-void Cube::setNormal(Vertex intersect)
+void Cube::setNormal(Point intersect)
 {
     this->normal_intersect = intersect;
 }
 
-Vertex Cube::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
+Point Cube::rayIntersect(Point rayOrigin, Point rayDirection)
 {
     float distance = MAXFLOAT;
-    Vertex closest_intersection = Vertex(0,0,0,-1);
+    Point closest_intersection = Point(MAXFLOAT);
     for (int i = 0; i < 12; i++)
     {
         Face face = this->faces[i];
-        Vertex intersection = face.rayIntersection(rayOrigin, rayDirection);
+        Point intersection = face.rayIntersection(rayOrigin, rayDirection);
         float intersectionDistance = sqrt(pow(intersection[0] - rayOrigin[0], 2) + pow(intersection[1] - rayOrigin[1], 2) + pow(intersection[2] - rayOrigin[2], 2));
-        if (intersection[3] > -1 && intersectionDistance < distance)
+        if (intersection[3] < MAXFLOAT && intersectionDistance < distance)
         {
             distance = intersectionDistance;
             closest_intersection = intersection;
@@ -104,15 +104,15 @@ Vertex Cube::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
     return closest_intersection;
 };
 
-Vertex Cube::normal(Vertex point)
+Point Cube::normal(Point point)
 {
     return this->normal_intersect;
 }
 
-Vertex Cube::Bounds()
+Point Cube::Bounds()
 {
-    Vertex minBounds = Vertex(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max(), 1);
-    Vertex maxBounds = Vertex(numeric_limits<float>::min(),numeric_limits<float>::min(),numeric_limits<float>::min(), 1);
+    Point minBounds = Point(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max(), 1);
+    Point maxBounds = Point(numeric_limits<float>::min(),numeric_limits<float>::min(),numeric_limits<float>::min(), 1);
     for(int i = 0; i < 8; i++)
     {
         if(vertices[i][0] > maxBounds[0])

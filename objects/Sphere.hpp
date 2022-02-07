@@ -4,13 +4,13 @@ class Sphere: public Shape
 {
     public:
         float radius;
-        Vertex center;
+        Point center;
         Material mat;
         Sphere();
-        Sphere(float radius, Vertex center, Material mat);
+        Sphere(float radius, Point center, Material mat);
         void applyTransform(Matrix transform);
         void setCameraCoordinates(Matrix worldToCamera);
         void setWorldCoordinates(Matrix cameraToWorld);
-        Vertex rayIntersect(Vertex rayOrigin, Vertex rayDirection);
-        Vertex normal(Vertex point);
+        Point rayIntersect(Point rayOrigin, Point rayDirection);
+        Point normal(Point point);
 };
