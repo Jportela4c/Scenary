@@ -34,28 +34,50 @@ Cube::Cube(float side, Vertex  center, Material mat)
 
 }
 
+void Cube::updateFaces()
+{
+    this->faces[0] = Face(this->vertices[2], this->vertices[3], this->vertices[7]);
+    this->faces[1] = Face(this->vertices[2], this->vertices[7], this->vertices[6]);
+    this->faces[2] = Face(this->vertices[2], this->vertices[1], this->vertices[0]);
+    this->faces[3] = Face(this->vertices[2], this->vertices[0], this->vertices[3]);
+    this->faces[4] = Face(this->vertices[3], this->vertices[0], this->vertices[7]);
+    this->faces[5] = Face(this->vertices[0], this->vertices[4], this->vertices[7]);
+    this->faces[6] = Face(this->vertices[1], this->vertices[4], this->vertices[0]);
+    this->faces[7] = Face(this->vertices[1], this->vertices[5], this->vertices[4]);
+    this->faces[8] = Face(this->vertices[7], this->vertices[4], this->vertices[6]);
+    this->faces[9] = Face(this->vertices[4], this->vertices[5], this->vertices[6]);
+    this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
+    this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
+}
+
 void Cube::applyTransform(Matrix transform)
 {
-    for(int i = 0; i < 8; i++)
+    this->center = transform * this->center;
+    for (int i = 0; i < 8; i++)
     {
-        vertices[i] = transform * vertices[i];
+        this->vertices[i] = transform * this->vertices[i];
     }
+    updateFaces();
 }
 
 void Cube::setCameraCoordinates(Matrix worldToCamera)
 {
+    this->center = worldToCamera * this->center;
     for(int i = 0; i < 8; i++)
     {
         vertices[i] = worldToCamera * vertices[i];
     }
+    updateFaces();
 }
 
 void Cube::setWorldCoordinates(Matrix cameraToWorld)
 {
+    this->center = cameraToWorld * this->center;
     for(int i = 0; i < 8; i++)
     {
         vertices[i] = cameraToWorld * vertices[i];
     }
+    updateFaces();
 }
 
 void Cube::setNormal(Vertex intersect)

@@ -70,6 +70,10 @@ Vertex Cylinder::planeIntersectTop(Vertex rayOrigin, Vertex rayDirection)
 //double check
 Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
 {
+
+    Vertex intersection_top = planeIntersectTop(rayOrigin, rayDirection);
+    Vertex intersection_base = planeIntersectBase(rayOrigin, rayDirection);
+
     Vertex v = (rayOrigin - this->center_base) - (rayOrigin - this->center_base).dot(this->axis) * this->axis;
     Vertex w = rayDirection - rayDirection.dot(this->axis) * this->axis;
 
@@ -80,12 +84,22 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
     float delta  = b*b - a*c;
 
     if (delta < 0){
-        return Vertex(0,0,0, -1);
+        if(intersection_base[3] == -1 && intersection_top[3] == -1){
+            return Vertex(0, 0, 0, -1);
+        }
+        else if(intersection_base[3] == -1){
+            return intersection_top;
+        }
+        else if(intersection_top[3] == -1){
+            return intersection_base;
+        }
+        else{
+            return Vertex(0, 0, 0, -1);
+        }
     }
     else{
 
         //Base intersections
-        Vertex intersection_base = this->planeIntersectBase(rayOrigin, rayDirection);
         float distance1,distance2;
         float distanceC1,distanceC2;
         distanceC1 = MAXFLOAT;
@@ -97,13 +111,12 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
             distance1 = sqrt(pow(intersection_base[0] - rayOrigin[0], 2) + pow(intersection_base[1] - rayOrigin[1], 2) + pow(intersection_base[2] - rayOrigin[2], 2));
             distanceC1 = sqrt(pow(intersection_base[0] - this->center_base[0], 2) + pow(intersection_base[1] - this->center_base[1], 2) + pow(intersection_base[2] - this->center_base[2], 2));
         }
-        Vertex intersection_top = this->planeIntersectTop(rayOrigin, rayDirection);
         if (intersection_top[3] != -1)
         {
             distance2 = sqrt(pow(intersection_top[0] - rayOrigin[0], 2) + pow(intersection_top[1] - rayOrigin[1], 2) + pow(intersection_top[2] - rayOrigin[2], 2));
             distanceC2 = sqrt(pow(intersection_top[0] - this->center_top[0], 2) + pow(intersection_top[1] - this->center_top[1], 2) + pow(intersection_top[2] - this->center_top[2], 2));
         }
-        Vertex closest_base_intersection;
+        Vertex closest_base_intersection = Vertex(0, 0, 0, -1);
         float closest_distanceB = MAXFLOAT;
 
         if (distanceC1 <= this->radius && distanceC2 <= this->radius)
@@ -122,7 +135,6 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
             closest_distanceB = distance2;
         }
         
-        
         float t1 = (-b - sqrt(delta)) / a;
         float t2 = (-b + sqrt(delta)) / a;
         float distance3 = MAXFLOAT;
@@ -140,7 +152,6 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
         float closest_distanceC = MAXFLOAT;
         if ((val1 >= 0 && val1 <= this->height) && (val2 >= 0 && val2 <= this->height))
         {
-            
             closest_cylindrical_intersection = distance3 < distance4 ? intersection1 : intersection2;
             closest_distanceC = distance3 < distance4 ? distance3 : distance4;
         }
@@ -162,7 +173,6 @@ Vertex Cylinder::rayIntersect(Vertex rayOrigin, Vertex rayDirection)
         closest_intersection = closest_distanceB < closest_distanceC ? closest_base_intersection : closest_cylindrical_intersection;
 
         return closest_intersection;
-        
     }
 };
 

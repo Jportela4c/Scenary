@@ -26,4 +26,5 @@ class Cube: public Shape
         void setNormal(Vertex intersect);
         Vertex normal(Vertex point);
         Vertex Bounds();
+        void updateFaces();
 };
