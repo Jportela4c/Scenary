@@ -1,44 +1,34 @@
 #include "Cube.hpp"
 
 Cube::Cube(){};
-Cube::Cube(float side, Vertex  center, Material mat): s(side), c(center), mat(mat)
+Cube::Cube(float side, Vertex  center, Material mat)
 {
-    float s = side/2;
-    Vertex c = center;
-    this->vertices[0] = Vertex(c[0] - s, c[1] + s, c[2] + s, 1);
-    this->vertices[1] = Vertex(c[0] - s, c[1] + s, c[2] - s, 1);
-    this->vertices[2] = Vertex(c[0] + s, c[1] + s, c[2] - s, 1);
-    this->vertices[3] = Vertex(c[0] + s, c[1] + s, c[2] + s, 1);
-    this->vertices[4] = Vertex(c[0] - s, c[1] - s, c[2] + s, 1);
-    this->vertices[5] = Vertex(c[0] - s, c[1] - s, c[2] - s, 1);
-    this->vertices[6] = Vertex(c[0] + s, c[1] - s, c[2] - s, 1);
-    this->vertices[7] = Vertex(c[0] + s, c[1] - s, c[2] + s, 1);
+    this->side = side;
+    this->center = center;
+    this->mat = mat;
 
-    // this->faces[0] = Face(this->vertices[2], this->vertices[3], this->vertices[7]);
-    // this->faces[1] = Face(this->vertices[2], this->vertices[7], this->vertices[6]);
-    // this->faces[2] = Face(this->vertices[2], this->vertices[1], this->vertices[0]);
-    // this->faces[3] = Face(this->vertices[2], this->vertices[0], this->vertices[3]);
-    // this->faces[4] = Face(this->vertices[3], this->vertices[0], this->vertices[7]);
-    // this->faces[5] = Face(this->vertices[0], this->vertices[4], this->vertices[7]);
-    // this->faces[6] = Face(this->vertices[1], this->vertices[4], this->vertices[0]);
-    // this->faces[7] = Face(this->vertices[1], this->vertices[5], this->vertices[4]);
-    // this->faces[8] = Face(this->vertices[7], this->vertices[4], this->vertices[6]);
-    // this->faces[9] = Face(this->vertices[4], this->vertices[5], this->vertices[6]);
-    // this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
-    // this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
+    float s = this->side/2;
+    this->vertices[0] = Vertex(this->center[0] - s, this->center[1] + s, this->center[2] + s, 1);
+    this->vertices[1] = Vertex(this->center[0] - s, this->center[1] + s, this->center[2] - s, 1);
+    this->vertices[2] = Vertex(this->center[0] + s, this->center[1] + s, this->center[2] - s, 1);
+    this->vertices[3] = Vertex(this->center[0] + s, this->center[1] + s, this->center[2] + s, 1);
+    this->vertices[4] = Vertex(this->center[0] - s, this->center[1] - s, this->center[2] + s, 1);
+    this->vertices[5] = Vertex(this->center[0] - s, this->center[1] - s, this->center[2] - s, 1);
+    this->vertices[6] = Vertex(this->center[0] + s, this->center[1] - s, this->center[2] - s, 1);
+    this->vertices[7] = Vertex(this->center[0] + s, this->center[1] - s, this->center[2] + s, 1);
 
-    this->faces[0] = Face(this->vertices[0], this->vertices[3], this->vertices[2]);
-    this->faces[1] = Face(this->vertices[2], this->vertices[1], this->vertices[0]);
-    this->faces[2] = Face(this->vertices[6], this->vertices[6], this->vertices[2]);
-    this->faces[3] = Face(this->vertices[5], this->vertices[1], this->vertices[2]);
-    this->faces[4] = Face(this->vertices[7], this->vertices[6], this->vertices[3]);
-    this->faces[5] = Face(this->vertices[6], this->vertices[2], this->vertices[3]);
-    this->faces[6] = Face(this->vertices[4], this->vertices[7], this->vertices[3]);
-    this->faces[7] = Face(this->vertices[3], this->vertices[0], this->vertices[4]);
-    this->faces[8] = Face(this->vertices[6], this->vertices[7], this->vertices[4]);
+    this->faces[0] = Face(this->vertices[2], this->vertices[3], this->vertices[7]);
+    this->faces[1] = Face(this->vertices[2], this->vertices[7], this->vertices[6]);
+    this->faces[2] = Face(this->vertices[2], this->vertices[1], this->vertices[0]);
+    this->faces[3] = Face(this->vertices[2], this->vertices[0], this->vertices[3]);
+    this->faces[4] = Face(this->vertices[3], this->vertices[0], this->vertices[7]);
+    this->faces[5] = Face(this->vertices[0], this->vertices[4], this->vertices[7]);
+    this->faces[6] = Face(this->vertices[1], this->vertices[4], this->vertices[0]);
+    this->faces[7] = Face(this->vertices[1], this->vertices[5], this->vertices[4]);
+    this->faces[8] = Face(this->vertices[7], this->vertices[4], this->vertices[6]);
     this->faces[9] = Face(this->vertices[4], this->vertices[5], this->vertices[6]);
-    this->faces[10] = Face(this->vertices[0], this->vertices[5], this->vertices[4]);
-    this->faces[11] = Face(this->vertices[5], this->vertices[0], this->vertices[1]);
+    this->faces[10] = Face(this->vertices[2], this->vertices[6], this->vertices[1]);
+    this->faces[11] = Face(this->vertices[6], this->vertices[5], this->vertices[1]);
 
     this->normal_intersect = Vertex(0, 0, 0, -1);
 

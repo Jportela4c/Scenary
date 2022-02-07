@@ -84,26 +84,21 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     Point p2p3p = v3p - v2p;
     Point p3p1p = v1p - v3p;
 
-    Point p1pi = pi - v1p;
-    Point p2pi = pi - v2p;
-    Point p3pi = pi - v3p;
+    Point n = (p1p2p.cross(p1p3p)).normalized();
 
-    Point normalp = (p1p2p.cross(p1p3p)).normalized();
-    float N = (p1p2p.cross(p1p3p)).norm();
+    Point p1pi = v1p - pi;
+    Point p2pi = v2p - pi;
+    Point p3pi = v3p - pi;
 
-    int se = (p1p2p.cross(p1pi)).dot(p1p2p.cross(p1p3p)) > 0 ? 1 : -1;
-    int sn = (p2p3p.cross(p2pi)).dot(p1p2p.cross(p1p3p)) > 0 ? 1 : -1;
-    int ss = (p3p1p.cross(p3pi)).dot(p1p2p.cross(p1p3p)) > 0 ? 1 : -1;
+    float e = p1pi.cross(p2pi).dot(n);
+    float f = (p2pi.cross(p3pi)).dot(n);
+    float s = 1 - e - f;
 
-    float e = se*(p1p2p.cross(p1pi).dot(normalp)/ N);
-    float n = sn*(p2p3p.cross(p2pi).dot(normalp)/ N);
-    float s = ss*(p3p1p.cross(p3pi).dot(normalp)/ N);
-
-    if(e < 0)
+    if (e < 0)
     {
         return Vertex(0,0,0,-1);
     }
-    else if (n < 0)
+    else if (f < 0)
     {
         return Vertex(0,0,0,-1);
     }
@@ -115,40 +110,6 @@ Vertex Face::rayIntersection(Vertex rayOrigin, Vertex rayDirection)
     {
         return planeIntersection;
     }
-    // Vertex pv1 = this->v1 - planeIntersection;
-    // Vertex pv2 = this->v2 - planeIntersection;
-    // Vertex pv3 = this->v3 - planeIntersection;
-
-    // Point pv1n = Point(pv1[0], pv1[1], pv1[2]);
-    // Point pv2n = Point(pv2[0], pv2[1], pv2[2]);
-    // Point pv3n = Point(pv3[0], pv3[1], pv3[2]);
-
-    // Point v1v2n = Point(this->v1v2[0], this->v1v2[1], this->v1v2[2]);
-    // Point v1v3n = Point(this->v1v3[0], this->v1v3[1], this->v1v3[2]);
-    // Point v2v3n = Point(this->v2v3[0], this->v2v3[1], this->v2v3[2]);
-    // Point v3v1n = Point(this->v3v1[0], this->v3v1[1], this->v3v1[2]);
-
-    // Point normaln = Point(this->normal[0], this->normal[1], this->normal[2]);
-
-    // float e = (pv1n.cross(pv2n)).dot(normaln);
-    // float f = (pv2n.cross(pv3n)).dot(normaln);
-    // float s = 1 - e - f;
-    // if (e < 0)
-    // {
-    //     return Vertex(0,0,0,-1);
-    // }
-    // else if (f < 0)
-    // {
-    //     return Vertex(0,0,0,-1);
-    // }
-    // else if (s < 0)
-    // {
-    //     return Vertex(0,0,0,-1);
-    // }
-    // else
-    // {
-    //     return planeIntersection;
-    // }
 };
 
 Vertex Face::getNormal()

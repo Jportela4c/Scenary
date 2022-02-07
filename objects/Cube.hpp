@@ -5,9 +5,9 @@ class Cube: public Shape
     public:
         Cube();
         Cube(float side, Vertex  center, Material mat);
-        float s;
+        float side;
         Material mat;
-        Vertex c;
+        Vertex center;
         Vertex v1;
         Vertex v2;
         Vertex v3;
