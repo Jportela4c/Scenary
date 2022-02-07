@@ -34,27 +34,27 @@ class Shape
         Material mat;
         void setCameraCoordinates(Matrix worldToCamera);
         void setWorldCoordinates(Matrix cameraToWorld);
-        Vertex rayIntercect(Vertex rayOrigin, Vertex rayDirection);
-        Vertex normal(Vertex point);
-        Vertex Bounds();
+        Point rayIntercect(Point rayOrigin, Point rayDirection);
+        Point normal(Point point);
+        Point Bounds();
         Shape();
 };
 
 class Face {
     public:
     Face();
-    Face(Vertex v1, Vertex v2, Vertex v3);
-    Vertex v1;
-    Vertex v2;
-    Vertex v1v2;
-    Vertex v1v3;
-    Vertex v2v3;
-    Vertex v3v1;
-    Vertex v3;
-    Vertex normal;
-    Vertex planeIntersection(Vertex rayOrigin, Vertex rayDirection);
-    Vertex rayIntersection(Vertex rayOrigin, Vertex rayDirection);
-    Vertex getNormal();
+    Face(Point v1, Point v2, Point v3);
+    Point v1;
+    Point v2;
+    Point v1v2;
+    Point v1v3;
+    Point v2v3;
+    Point v3v1;
+    Point v3;
+    Point normal;
+    Point planeIntersection(Point rayOrigin, Point rayDirection);
+    Point rayIntersection(Point rayOrigin, Point rayDirection);
+    Point getNormal();
 };
 
 class Cluster
