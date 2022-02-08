@@ -1,53 +1,47 @@
 #include "Camera.hpp"
 
 Camera::Camera(){};
-Camera::Camera(Vertex eye, Vertex lookAt, Vertex viewUp)
+Camera::Camera(Point eye, Point lookAt, Point viewUp)
 {
     this->eye = eye;
     this->lookAt = lookAt;
     this->viewUp = viewUp;
 
-    k = (eye - lookAt).normalized();
+    Point k = (eye - lookAt).normalized();
 
-    Point kn = Point(k[0], k[1], k[2]);
-    Point vn = Point(viewUp[0], viewUp[1], viewUp[2]);
-    Point in = (vn.cross(kn)).normalized();
-    Point jn = (kn.cross(in)).normalized();
-
-    i = Vertex(in[0], in[1], in[2], 1.0);
-    j = Vertex(jn[0], jn[1], jn[2], 1.0);
-
+    Point i = (viewUp.cross(k)).normalized();
+    Point j = (k.cross(i)).normalized();
 };
 
 Matrix Camera::worldToCamera()
 {
     Matrix worldToCamera;
-    worldToCamera << i.x(), i.y(), i.z(), -i.dot(eye),
-                    j.x(), j.y(), j.z(), -j.dot(eye),
-                    k.x(), k.y(), k.z(), -k.dot(eye),
+    worldToCamera << i[0], i[1], i[2], -i.dot(eye),
+                    j[0], j[1], j[2], -j.dot(eye),
+                    k[0], k[1], k[2], -k.dot(eye),
                     0, 0, 0, 1;
     return worldToCamera;
 };
 
 Matrix Camera::cameraToWorld(){
     Matrix cameraToWorld;
-    cameraToWorld << i.x(), j.x(), k.x(), eye.x(),
-                    i.y(), j.y(), k.y(), eye.y(),
-                    i.z(), j.z(), k.z(), eye.z(),
+    cameraToWorld << i[0], j[0], k[0], eye[0],
+                    i[1], j[1], k[1], eye[1],
+                    i[2], j[2], k[2], eye[2],
                     0, 0, 0, 1;
     return cameraToWorld;
 };
 
 void Camera::update(){
-    k = (eye - lookAt).normalized();
 
-    Point kn = Point(k[0], k[1], k[2]);
-    Point vn = Point(viewUp[0], viewUp[1], viewUp[2]);
-    Point in = (vn.cross(kn)).normalized();
-    Point jn = (kn.cross(in)).normalized();
+    Point k1 = (eye - lookAt).normalized();
 
-    i = Vertex(in[0], in[1], in[2], 1.0);
-    j = Vertex(jn[0], jn[1], jn[2], 1.0);
+    Point i = (viewUp.cross(k1)).normalized();
+    Point j = (k1.cross(i)).normalized();
+
+    Vertex k = Vertex(k[0], k[1], k[2], 1);
+    Vertex i = Vertex(i[0], i[1], i[2], 1.0);
+    Vertex j = Vertex(j[0], j[1], j[2], 1.0);
 };
 
 void Camera::moveX(float x)
@@ -68,7 +62,7 @@ void Camera::moveZ(float z)
     update();
 };
 
-void Camera::moveTo(Vertex eye)
+void Camera::moveTo(Point eye)
 {
     this->eye = eye;
     update();

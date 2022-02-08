@@ -9,6 +9,7 @@
 #define WIDTH 500
 #define BG Point(0, 0, 0)
 
+#define MAXFLOAT 1000000.f
 
 using namespace std;
 
@@ -19,29 +20,28 @@ typedef Eigen::Matrix<Point, HEIGHT, WIDTH> Grid;
 
 class Material
 {
-    public:
-        Point ka;
-        Point kd;
-        Point ks;
-        float shininess;
-        Material();
-        Material(Point ka, Point kd, Point ks, float shininess);
+public:
+    Point ka;
+    Point kd;
+    Point ks;
+    float shininess;
+    Material();
+    Material(Point ka, Point kd, Point ks, float shininess);
 };
 
 class Shape
 {
-    public:
-        Material mat;
-        void setCameraCoordinates(Matrix worldToCamera);
-        void setWorldCoordinates(Matrix cameraToWorld);
-        Point rayIntercect(Point rayOrigin, Point rayDirection);
-        Point normal(Point point);
-        Point Bounds();
-        Shape();
+public:
+    Material mat;
+    virtual void setCameraCoordinates(Matrix worldToCamera) = 0;
+    virtual void setWorldCoordinates(Matrix cameraToWorld) = 0;
+    virtual Point rayIntersect(Point rayOrigin, Point rayDirection) = 0;
+    virtual Point normal(Point point) = 0;
+    virtual Point Bounds() = 0;
 };
 
 class Face {
-    public:
+public:
     Face();
     Face(Point v1, Point v2, Point v3);
     Point v1;
@@ -59,6 +59,6 @@ class Face {
 
 class Cluster
 {
-    public:
+public:
     vector<Shape> shapes;
 };

@@ -1,6 +1,6 @@
 #include "Aux.hpp"
 
-Material::Material(){};
+Material::Material() {};
 Material::Material(Point ka, Point kd, Point ks, float shininess)
 {
     this->ka = ka;
@@ -9,21 +9,13 @@ Material::Material(Point ka, Point kd, Point ks, float shininess)
     this->shininess = shininess;
 };
 
-Shape::Shape(){};
-Point Shape::Bounds(){return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);};
-Point Shape::rayIntercect(Point rayOrigin, Point rayDirection){return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);};
-Point Shape::normal(Point point){return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);};
-void Shape::setCameraCoordinates(Matrix worldToCamera){};
-void Shape::setWorldCoordinates(Matrix camreToWolrd){};
-
-Face::Face(){
+Face::Face() {
     v1 = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
     v2 = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
     v3 = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
 };
 
-Face::Face(Point vertex1, Point vertex2, Point vertex3)
-{
+Face::Face(Point vertex1, Point vertex2, Point vertex3) {
     this->v1 = vertex1;
     this->v2 = vertex2;
     this->v3 = vertex3;
@@ -33,7 +25,6 @@ Face::Face(Point vertex1, Point vertex2, Point vertex3)
     this->v3v1 = this->v1 - this->v3;
 
     this->normal = (v1v2.cross(v1v3)).normalized();
-
 }
 
 Point Face::planeIntersection(Point rayOrigin, Point rayDirection)
@@ -46,10 +37,10 @@ Point Face::planeIntersection(Point rayOrigin, Point rayDirection)
     {
         return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
     }
-    
+
     else
     {
-        t = (this->normal.dot(v_aux1))/prod;
+        t = (this->normal.dot(v_aux1)) / prod;
     }
     Point planeIntersection = rayOrigin + (rayDirection * t);
     return planeIntersection;
@@ -59,11 +50,11 @@ Point Face::rayIntersection(Point rayOrigin, Point rayDirection)
 {
     Point planeIntersection = this->planeIntersection(rayOrigin, rayDirection);
 
-    if(planeIntersection[3] == MAXFLOAT)
+    if (planeIntersection[2] == MAXFLOAT)
     {
         return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
     }
-    
+
 
     Point p1p2 = this->v2 - this->v1;
     Point p1p3 = this->v3 - this->v1;
@@ -72,30 +63,22 @@ Point Face::rayIntersection(Point rayOrigin, Point rayDirection)
 
     Point n = (p1p2.cross(p1p3)).normalized();
 
-    Point p1pi = this->v1 - planeIntersection;
-    Point p2pi = this->v2 - planeIntersection;
-    Point p3pi = this->v3 - planeIntersection;
+    Point p1pi = planeIntersection - this->v1;
+    Point p2pi = planeIntersection - this->v2;
+    Point p3pi = planeIntersection - this->v3;
 
-    float e = p1pi.cross(p2pi).dot(n);
-    float f = (p2pi.cross(p3pi)).dot(n);
-    float s = 1 - e - f;
 
-    if (e < 0)
-    {
+    if(p1p2.cross(p1pi).dot(p1p2.cross(p1p3)) < 0)
         return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-    }
-    else if (f < 0)
-    {
+
+    if(p2p3.cross(p2pi).dot(p1p2.cross(p1p3)) < 0) 
         return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-    }
-    else if (s < 0)
-    {
+
+    if(p3p1.cross(p3pi).dot(p1p2.cross(p1p3)) < 0)
         return Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-    }
-    else
-    {
-        return planeIntersection;
-    }
+
+
+    return planeIntersection;
 };
 
 Point Face::getNormal()

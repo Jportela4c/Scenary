@@ -1,6 +1,6 @@
 #include "Sphere.hpp"
 
-Sphere::Sphere(){};
+Sphere::Sphere() {};
 Sphere::Sphere(float radius, Point center, Material mat)
 {
     this->radius = radius;
@@ -44,7 +44,7 @@ Point Sphere::rayIntersect(Point rayOrigin, Point rayDirection)
     else
     {
         float t1 = (-b - (sqrt(delta) / a));
-        float t2 = (-b + (sqrt(delta) /a));
+        float t2 = (-b + (sqrt(delta) / a));
         if (t1 == t2)
         {
             Point intersection = (rayOrigin + rayDirection * t1);
@@ -66,4 +66,9 @@ Point Sphere::normal(Point point)
 {
     Point normal = (point - this->center).normalized();
     return normal;
-};
+}
+Point Sphere::Bounds()
+{
+    return Point();
+}
+;
