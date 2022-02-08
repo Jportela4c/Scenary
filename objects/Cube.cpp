@@ -52,7 +52,9 @@ void Cube::updateFaces()
 //Utilizar Vertex
 void Cube::applyTransform(Matrix transform)
 {
-    this->center = transform * this->center;
+    Vertex c = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    c = transform * c;
+    this->center = Point(c[0], c[1], c[2]);
     for (int i = 0; i < 8; i++)
     {
         Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
@@ -64,7 +66,9 @@ void Cube::applyTransform(Matrix transform)
 //Utilizar Vertex
 void Cube::setCameraCoordinates(Matrix worldToCamera)
 {
-    this->center = worldToCamera * this->center;
+    Vertex c = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    c = worldToCamera * c;
+    this->center = Point(c[0], c[1], c[2]);
     for(int i = 0; i < 8; i++)
     {
         Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
@@ -76,7 +80,9 @@ void Cube::setCameraCoordinates(Matrix worldToCamera)
 //Utilizar Vertex
 void Cube::setWorldCoordinates(Matrix cameraToWorld)
 {
-    this->center = cameraToWorld * this->center;
+    Vertex c = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    c = cameraToWorld * c;
+    this->center = Point(c[0], c[1], c[2]);
     for(int i = 0; i < 8; i++)
     {
         Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);

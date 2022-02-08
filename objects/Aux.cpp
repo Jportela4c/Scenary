@@ -24,9 +24,9 @@ Face::Face(){
 
 Face::Face(Point vertex1, Point vertex2, Point vertex3)
 {
-    this->v1 = v1;
-    this->v2 = v2;
-    this->v3 = v3;
+    this->v1 = vertex1;
+    this->v2 = vertex2;
+    this->v3 = vertex3;
     this->v1v2 = this->v2 - this->v1;
     this->v1v3 = this->v3 - this->v1;
     this->v2v3 = this->v3 - this->v2;
