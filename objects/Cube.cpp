@@ -55,7 +55,9 @@ void Cube::applyTransform(Matrix transform)
     this->center = transform * this->center;
     for (int i = 0; i < 8; i++)
     {
-        this->vertices[i] = transform * this->vertices[i];
+        Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
+        Vertex p = transform * v;
+        this->vertices[i] = Point(p[0], p[1], p[2]);
     }
     updateFaces();
 }
@@ -65,7 +67,9 @@ void Cube::setCameraCoordinates(Matrix worldToCamera)
     this->center = worldToCamera * this->center;
     for(int i = 0; i < 8; i++)
     {
-        vertices[i] = worldToCamera * vertices[i];
+        Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
+        Vertex p = worldToCamera * v;
+        this->vertices[i] = Point(p[0], p[1], p[2]);
     }
     updateFaces();
 }
@@ -75,7 +79,9 @@ void Cube::setWorldCoordinates(Matrix cameraToWorld)
     this->center = cameraToWorld * this->center;
     for(int i = 0; i < 8; i++)
     {
-        vertices[i] = cameraToWorld * vertices[i];
+        Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
+        Vertex p = cameraToWorld * v;
+        this->vertices[i] = Point(p[0], p[1], p[2]);
     }
     updateFaces();
 }
@@ -111,8 +117,8 @@ Point Cube::normal(Point point)
 
 Point Cube::Bounds()
 {
-    Point minBounds = Point(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max(), 1);
-    Point maxBounds = Point(numeric_limits<float>::min(),numeric_limits<float>::min(),numeric_limits<float>::min(), 1);
+    Point minBounds = Point(numeric_limits<float>::max(), numeric_limits<float>::max(), numeric_limits<float>::max());
+    Point maxBounds = Point(numeric_limits<float>::min(),numeric_limits<float>::min(),numeric_limits<float>::min());
     for(int i = 0; i < 8; i++)
     {
         if(vertices[i][0] > maxBounds[0])

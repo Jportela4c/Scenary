@@ -14,20 +14,41 @@ Cylinder::Cylinder(float radius, float height, Point center_base, Point axis, Ma
 /*Adicionar VERTEX*/
 void Cylinder::applyTransform(Matrix transform)
 {
-    this->center_base = transform * this->center_base;
-    this->axis = transform * this->axis;
+    Vertex cb = Vertex(this->center_base[0], this->center_base[1], this->center_base[2], 1);
+    cb = transform * cb;
+    this->center_base = Point(cb[0], cb[1], cb[2]);
+
+    Vertex axisv = Vertex(this->axis[0], this->axis[1], this->axis[2], 1);
+    axisv = transform * axisv;
+
+    this->axis = Point(axisv[0], axisv[1], axisv[2]);
+    this->center_top = this->center_base + this->axis * this->height;
 };
 /*Adicionar VERTEX*/
 void Cylinder::setCameraCoordinates(Matrix worldToCamera)
 {
-    this->center_base = worldToCamera * this->center_base;
-    this->axis = worldToCamera * this->axis;
+    Vertex cb = Vertex(this->center_base[0], this->center_base[1], this->center_base[2], 1);
+    cb = worldToCamera * cb;
+    this->center_base = Point(cb[0], cb[1], cb[2]);
+
+    Vertex axisv = Vertex(this->axis[0], this->axis[1], this->axis[2], 1);
+    axisv = worldToCamera * axisv;
+
+    this->axis = Point(axisv[0], axisv[1], axisv[2]);
+    this->center_top = this->center_base + this->axis * this->height;
 };
 /*Adicionar VERTEX*/
 void Cylinder::setWorldCoordinates(Matrix cameraToWorld)
 {
-    this->center_base = cameraToWorld * this->center_base;
-    this->axis = cameraToWorld * this->axis;
+    Vertex cb = Vertex(this->center_base[0], this->center_base[1], this->center_base[2], 1);
+    cb = cameraToWorld * cb;
+    this->center_base = Point(cb[0], cb[1], cb[2]);
+
+    Vertex axisv = Vertex(this->axis[0], this->axis[1], this->axis[2], 1);
+    axisv = cameraToWorld * axisv;
+
+    this->axis = Point(axisv[0], axisv[1], axisv[2]);
+    this->center_top = this->center_base + this->axis * this->height;
 };
 
 Point Cylinder::planeIntersectBase(Point rayOrigin, Point rayDirection)
@@ -106,12 +127,12 @@ Point Cylinder::rayIntersect(Point rayOrigin, Point rayDirection)
         distanceC2 = MAXFLOAT;
         distance1 = MAXFLOAT;
         distance2 = MAXFLOAT;
-        if (intersection_base[3] != -1)
+        if (intersection_base[0] < MAXFLOAT)
         {
             distance1 = sqrt(pow(intersection_base[0] - rayOrigin[0], 2) + pow(intersection_base[1] - rayOrigin[1], 2) + pow(intersection_base[2] - rayOrigin[2], 2));
             distanceC1 = sqrt(pow(intersection_base[0] - this->center_base[0], 2) + pow(intersection_base[1] - this->center_base[1], 2) + pow(intersection_base[2] - this->center_base[2], 2));
         }
-        if (intersection_top[3] != -1)
+        if (intersection_top[0] < MAXFLOAT)
         {
             distance2 = sqrt(pow(intersection_top[0] - rayOrigin[0], 2) + pow(intersection_top[1] - rayOrigin[1], 2) + pow(intersection_top[2] - rayOrigin[2], 2));
             distanceC2 = sqrt(pow(intersection_top[0] - this->center_top[0], 2) + pow(intersection_top[1] - this->center_top[1], 2) + pow(intersection_top[2] - this->center_top[2], 2));

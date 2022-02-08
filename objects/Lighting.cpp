@@ -112,14 +112,24 @@ Point SpotLighting::specularIntensity(Point point, Point normal, Material mat)
 //Utilizar Vertex
 void SpotLighting::setCameraCoordinates(Matrix worldToCamera)
 {
-    this->position = worldToCamera * this->position;
-    this->direction = worldToCamera * this->direction;
+    Vertex p = Vertex(this->position[0], this->position[1], this->position[2], 1);
+    Vertex d = Vertex(this->direction[0], this->direction[1], this->direction[2], 1);
+    p = worldToCamera * p;
+    d = worldToCamera * d;
+
+    this->position = Point(p[0], p[1], p[2]);
+    this->direction = Point(d[0], d[1], d[2]);
 };
 //Utilizar Vertex
 void SpotLighting::setWorldCoordinates(Matrix cameraToWorld)
 {
-    this->position = cameraToWorld * this->position;
-    this->direction = cameraToWorld * this->direction;
+    Vertex p = Vertex(this->position[0], this->position[1], this->position[2], 1);
+    Vertex d = Vertex(this->direction[0], this->direction[1], this->direction[2], 1);
+    p = cameraToWorld * p;
+    d = cameraToWorld * d;
+
+    this->position = Point(p[0], p[1], p[2]);
+    this->direction = Point(d[0], d[1], d[2]);
 };
 
 FarLighting::FarLighting(float r, float g, float b, Point direction) 
@@ -186,12 +196,16 @@ Point FarLighting::specularIntensity(Point point, Point normal, Material mat)
 //Utilizar Vertex
 void FarLighting::setCameraCoordinates(Matrix worldToCamera)
 {
-    this->direction = worldToCamera * this->direction;
+    Vertex d = Vertex(this->direction[0], this->direction[1], this->direction[2], 1);
+    d = worldToCamera * d;
+    this->direction = Point(d[0], d[1], d[2]);
 };
 //Utilizar Vertex
 void FarLighting::setWorldCoordinates(Matrix cameraToWorld)
 {
-    this->direction = cameraToWorld * this->direction;
+    Vertex d = Vertex(this->direction[0], this->direction[1], this->direction[2], 1);
+    d = cameraToWorld * d;
+    this->direction = Point(d[0], d[1], d[2]);
 };
 
 PointLighting::PointLighting(float r, float g, float b, Point position)
@@ -263,10 +277,13 @@ Point PointLighting::specularIntensity(Point point, Point normal, Material mat)
 //Utilizar Vertex
 void PointLighting::setCameraCoordinates(Matrix worldToCamera)
 {
-    this->position = worldToCamera * this->position;
+    Vertex d = Vertex(this->position[0], this->position[1], this->position[2], 1);
+    d = worldToCamera * d;
+    this->position = Point(d[0], d[1], d[2]);
 };
 //Utilizar Vertex
 void PointLighting::setWorldCoordinates(Matrix cameraToWorld)
 {
-    this->position = cameraToWorld * this->position;
-};
+    Vertex d = Vertex(this->position[0], this->position[1], this->position[2], 1);
+    d = cameraToWorld * d;
+    this->position = Point(d[0], d[1], d[2]);

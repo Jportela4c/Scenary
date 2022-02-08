@@ -15,20 +15,38 @@ Cone::Cone(float radius, float height, float angle, Point center, Point axis, Ma
 //Utilizar Vertex
 void Cone::applyTransform(Matrix transform)
 {
-    this->center = transform * this->center;
-    this->axis = transform * this->axis;
+    Vertex cb = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    cb = transform * cb;
+    this->center = Point(cb[0], cb[1], cb[2]);
+
+    Vertex axisv = Vertex(this->axis[0], this->axis[1], this->axis[2], 1);
+    axisv = transform * axisv;
+
+    this->origin = this->center + this->axis * this->height;
 };
 //Utilizar Vertex
 void Cone::setCameraCoordinates(Matrix worldToCamera)
 {
-    this->center = worldToCamera * this->center;
-    this->axis = worldToCamera * this->axis;
+    Vertex cb = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    cb = worldToCamera * cb;
+    this->center = Point(cb[0], cb[1], cb[2]);
+
+    Vertex axisv = Vertex(this->axis[0], this->axis[1], this->axis[2], 1);
+    axisv = worldToCamera * axisv;
+
+    this->origin = this->center + this->axis * this->height;
 };
 //Utilizar Vertex
 void Cone::setWorldCoordinates(Matrix cameraToWorld)
 {
-    this->center = cameraToWorld * this->center;
-    this->axis = cameraToWorld * this->axis;
+    Vertex cb = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    cb = cameraToWorld * cb;
+    this->center = Point(cb[0], cb[1], cb[2]);
+
+    Vertex axisv = Vertex(this->axis[0], this->axis[1], this->axis[2], 1);
+    axisv = cameraToWorld * axisv;
+
+    this->origin = this->center + this->axis * this->height;
 };
 
 Point Cone::planeIntersectBase(Point rayOrigin, Point rayDirection)
