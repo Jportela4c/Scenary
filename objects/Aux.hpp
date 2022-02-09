@@ -9,7 +9,7 @@
 #define WIDTH 500
 #define BG Point(0, 0, 0)
 
-#define MAXFLOAT 1000000.f
+#define MAXFLOAT numeric_limits<float>::max()
 
 using namespace std;
 

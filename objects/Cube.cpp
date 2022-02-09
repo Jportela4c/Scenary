@@ -1,7 +1,5 @@
 #include "Cube.hpp"
 
-#define MAXFLOAT 1000000.f
-
 Cube::Cube() {};
 Cube::Cube(float side, Point  center, Material mat)
 {

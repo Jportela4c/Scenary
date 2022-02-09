@@ -1,5 +1,4 @@
 #include "Scenary.hpp"
-
 Scenary::Scenary(){
 
 };
@@ -48,39 +47,48 @@ void Scenary::rayCasting()
 {
     this->setCameraCoordinates();
     Point intersect;
-    for (int i = 0; i < this->shapes.size(); i++)
+    for (int i = 0; i < HEIGHT; i++)
     {
-        for (int j = 0; j < this->canvas.rows(); j++)
+        for (int j = 0; j < WIDTH; j++)
         {
-            for (int k = 0; k < this->canvas.cols(); k++)
+            Point rayOrigin = this->camera.eye;
+            Point rayDirection = this->canvas[i*WIDTH + j] - rayOrigin;
+            Point intersect = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
+            float closestDistance = MAXFLOAT;
+            for (int k = 0; k < this->shapes.size(); k++)
             {
-                Point rayOrigin = this->camera.eye;
-                Point rayDirection = this->canvas(j, k) - rayOrigin;
-                intersect = this->shapes[i]->rayIntersect(rayOrigin, rayDirection);
-                if (intersect[3] < MAXFLOAT)
+                Point c_intersect = this->shapes[k]->rayIntersect(rayOrigin, rayDirection);
+                float d = (c_intersect - rayOrigin).norm();
+                if (d < closestDistance)
                 {
-                    Point intensity = this->ambientLight.ambientIntensity(intersect, this->shapes[i]->mat);
-                    // Point intersect_point = Point(0,0,0);
-                    // intersect_point[0] = this->canvas(j, k)[0];
-                    // intersect_point[1] = this->canvas(j, k)[1];
-                    // intersect_point[2] = this->canvas(j, k)[2];
-                    for (int l = 0; l < this->lights.size(); l++)
-                    {
-                        intensity += this->lights[l].difuseIntensity(intersect, this->shapes[i]->normal(this->canvas(j, k)), this->shapes[i]->mat);
-                        intensity += this->lights[l].specularIntensity(intersect, this->shapes[i]->normal(this->canvas(j, k)), this->shapes[i]->mat);
-                    }
-                    int position = k*3*WIDTH+j*3;
-                    this->frame[position] = intensity[0];
-                    this->frame[position+1] = intensity[1];
-                    this->frame[position+2] = intensity[2];
+                    closestDistance = d;
+                    intersect = c_intersect;
                 }
-                else
+            }
+
+            if (intersect[0] < MAXFLOAT)
+            {
+                Point intensity = this->ambientLight.ambientIntensity(intersect, this->shapes[i]->mat);
+                // Point intersect_point = Point(0,0,0);
+                // intersect_point[0] = this->canvas(j, k)[0];
+                // intersect_point[1] = this->canvas(j, k)[1];
+                // intersect_point[2] = this->canvas(j, k)[2];
+                for (int l = 0; l < this->lights.size(); l++)
                 {
-                    int position = k*3*WIDTH+j*3;
-                    this->frame[position] = BG[0];
-                    this->frame[position+1] = BG[1];
-                    this->frame[position+2] = BG[2];
+                    intensity += this->lights[l].difuseIntensity(intersect, this->shapes[i]->normal(this->canvas[i*WIDTH + j]), this->shapes[i]->mat);
+                    intensity += this->lights[l].specularIntensity(intersect, this->shapes[i]->normal(this->canvas[i*WIDTH + j]), this->shapes[i]->mat);
                 }
+                int position = j*3*WIDTH+i*3;
+                this->frame[position] = intensity[0];
+                this->frame[position+1] = intensity[1];
+                this->frame[position+2] = intensity[2];
+            }
+            else
+            {
+                int position = j*3*WIDTH+i*3;
+                this->frame[position] = BG[0];
+                this->frame[position+1] = BG[1];
+                this->frame[position+2] = BG[2];
             }
         }
     }  

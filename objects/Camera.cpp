@@ -32,16 +32,16 @@ Matrix Camera::cameraToWorld(){
     return cameraToWorld;
 };
 
-void Camera::update(){
+void Camera::update()
+{
+    this->eye = eye;
+    this->lookAt = lookAt;
+    this->viewUp = viewUp;
 
-    Point k1 = (eye - lookAt).normalized();
+    Point k = (eye - lookAt).normalized();
 
-    Point i = (viewUp.cross(k1)).normalized();
-    Point j = (k1.cross(i)).normalized();
-
-    Vertex k = Vertex(k[0], k[1], k[2], 1);
-    Vertex i = Vertex(i[0], i[1], i[2], 1.0);
-    Vertex j = Vertex(j[0], j[1], j[2], 1.0);
+    Point i = (viewUp.cross(k)).normalized();
+    Point j = (k.cross(i)).normalized();
 };
 
 void Camera::moveX(float x)
