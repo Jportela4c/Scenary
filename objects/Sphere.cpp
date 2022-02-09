@@ -68,8 +68,11 @@ Point Sphere::normal(Point point)
     return normal;
 }
 
-Point Sphere::Bounds()
+Point* Sphere::Bounds()
 {
-    return Point();
-}
-;
+    Point max_bounds = Point(this->center[0] + this->radius, this->center[1] + this->radius, this->center[2] + this->radius);
+    Point min_bounds = Point(this->center[0] - this->radius, this->center[1] - this->radius, this->center[2] - this->radius);
+    Point bounds[2] = {min_bounds, max_bounds};
+
+    return bounds;
+};

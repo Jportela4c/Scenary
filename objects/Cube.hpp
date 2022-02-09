@@ -25,6 +25,6 @@ public:
     Point rayIntersect(Point rayOrigin, Point rayDirection);
     void setNormal(Point intersect);
     Point normal(Point point);
-    Point Bounds();
+    Point* Bounds();
     void updateFaces();
 };

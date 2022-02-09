@@ -19,4 +19,5 @@ class Cylinder : public Shape
         Point planeIntersectTop(Point rayOrigin, Point rayDirection);
         Point normal(Point point);
         bool validate(Point p);
+        Point* Bounds();
 };

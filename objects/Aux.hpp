@@ -35,9 +35,10 @@ public:
     Material mat;
     virtual void setCameraCoordinates(Matrix worldToCamera) = 0;
     virtual void setWorldCoordinates(Matrix cameraToWorld) = 0;
+    virtual void applyTransform(Matrix transformation) = 0;
     virtual Point rayIntersect(Point rayOrigin, Point rayDirection) = 0;
     virtual Point normal(Point point) = 0;
-    virtual Point Bounds() = 0;
+    virtual Point* Bounds() = 0;
 };
 
 class Face {
@@ -60,5 +61,11 @@ public:
 class Cluster
 {
 public:
-    vector<Shape> shapes;
+    vector<Shape*> shapes;
+    void addShape(Shape* shape);
+    Point rayIntersect(Point rayOrigin, Point rayDirection);
+    void setCameraCoordinates(Matrix worldToCamera);
+    void setWorldCoordinates(Matrix cameraToWorld);
+    void applyTransformation(Matrix transformation);
+    Point* Bounds();
 };

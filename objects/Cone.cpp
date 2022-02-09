@@ -336,3 +336,52 @@ Point Cone::normal(Point point)
     return N;
 
 };
+
+Point* Cone::Bounds()
+{
+    Point max_bounds = this->center + this->height * this->axis;
+    Point min_bounds = this->center - this->height * this->axis;
+
+    Point p = Point (1, 0, 0);
+
+    if (this->axis[1] != 1)
+    {
+        p = this->axis * Point(0, 1, 0);
+    }
+    Point p2 = (this->axis).cross(p);
+
+    for (int i = 0; i < 4; i++)
+    {
+        if(this->center[0] > max_bounds[0])
+        {
+            max_bounds[0] = this->center[0];
+        }
+        if(this->center[0] < min_bounds[0])
+        {
+            min_bounds[0] = this->center[0];
+        }
+        if(this->center[1] > max_bounds[1])
+        {
+            max_bounds[1] = this->center[1];
+        }
+        if(this->center[1] < min_bounds[1])
+        {
+            min_bounds[1] = this->center[1];
+        }
+        if(this->center[2] > max_bounds[2])
+        {
+            max_bounds[2] = this->center[2];
+        }
+        if(this->center[2] < min_bounds[2])
+        {
+            min_bounds[2] = this->center[2];
+        }
+
+        p = p2;
+        p2 = (this->axis).cross(p);
+    }
+
+    Point bounds[2] = {min_bounds, max_bounds};
+
+    return bounds;
+}

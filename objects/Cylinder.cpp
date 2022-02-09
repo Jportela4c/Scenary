@@ -283,7 +283,6 @@ Point Cylinder::rayIntersect(Point rayOrigin, Point rayDirection)
     return int_base;
 }
 
-
 Point Cylinder::normal(Point point)
 {
     Point pointToCenter = point - this->center_base;
@@ -295,4 +294,70 @@ Point Cylinder::normal(Point point)
     normal = normal/this->radius;
 
     return normal;
+}
+
+Point* Cylinder::Bounds()
+{
+    Point max_bounds = this->center_base + this->axis * this->height;
+    Point min_bounds = this->center_base + this->axis * this->height;
+
+    Point p = Point(1, 0, 0);
+
+    if(this->axis[1] != 1)
+    {
+        p = this->axis.cross(Point(0, 1, 0));
+    }
+    Point p2 = p.cross(this->axis);
+
+    for(int i  = 0; i < 4; i++)
+    {
+        Point pb = this->center_base + p * this->radius + p2 * this->radius;
+
+        if(pb[0] > max_bounds[0])
+        {
+            max_bounds[0] = pb[0];
+        }
+        if(pb[1] > max_bounds[1])
+        {
+            max_bounds[1] = pb[1];
+        }
+        if(pb[2] > max_bounds[2])
+        {
+            max_bounds[2] = pb[2];
+        }
+        if(pb[0] < min_bounds[0])
+        {
+            min_bounds[0] = pb[0];
+        }
+        if(pb[1] < min_bounds[1])
+        {
+            min_bounds[1] = pb[1];
+        }
+        if(pb[2] < min_bounds[2])
+        {
+            min_bounds[2] = pb[2];
+        }
+
+        Point pt = this->center_top + p * this->radius - p2 * this->radius;
+
+        if(pt[0] > max_bounds[0])
+        {
+            max_bounds[0] = pt[0];
+        }
+        if(pt[1] > max_bounds[1])
+        {
+            max_bounds[1] = pt[1];
+        }
+        if(pt[2] > max_bounds[2])
+        {
+            max_bounds[2] = pt[2];
+        }
+
+        p = p2;
+        p2 = p.cross(this->axis);
+    }
+
+    Point bounds[2] = {min_bounds, max_bounds};
+
+    return bounds;
 }

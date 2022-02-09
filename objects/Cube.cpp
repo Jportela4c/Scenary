@@ -137,38 +137,39 @@ Point Cube::normal(Point point)
     return this->normal_intersect;
 }
 
-Point Cube::Bounds()
+Point* Cube::Bounds()
 {
-    //Point minBounds = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-    //Point maxBounds = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-    //for (int i = 0; i < 8; i++)
-    //{
-    //    if (vertices[i][0] > maxBounds[0])
-    //    {
-    //        maxBounds[0] = vertices[i][0];
-    //    }
-    //    if (vertices[i][1] > maxBounds[1])
-    //    {
-    //        maxBounds[1] = vertices[i][1];
-    //    }
-    //    if (vertices[i][2] > maxBounds[2])
-    //    {
-    //        maxBounds[2] = vertices[i][2];
-    //    }
-    //    if (vertices[i][0] < minBounds[0])
-    //    {
-    //        minBounds[0] = vertices[i][0];
-    //    }
-    //    if (vertices[i][1] < minBounds[1])
-    //    {
-    //        minBounds[1] = vertices[i][1];
-    //    }
-    //    if (vertices[i][2] < minBounds[2])
-    //    {
-    //        minBounds[2] = vertices[i][2];
-    //    }
-    //}
+    Point minBounds = this->vertices[0];
+    Point maxBounds = this->vertices[0];
+    for (int i = 0; i < 8; i++)
+    {
+        if (vertices[i][0] > maxBounds[0])
+        {
+            maxBounds[0] = vertices[i][0];
+        }
+        if (vertices[i][1] > maxBounds[1])
+        {
+            maxBounds[1] = vertices[i][1];
+        }
+        if (vertices[i][2] > maxBounds[2])
+        {
+            maxBounds[2] = vertices[i][2];
+        }
+        if (vertices[i][0] < minBounds[0])
+        {
+            minBounds[0] = vertices[i][0];
+        }
+        if (vertices[i][1] < minBounds[1])
+        {
+            minBounds[1] = vertices[i][1];
+        }
+        if (vertices[i][2] < minBounds[2])
+        {
+            minBounds[2] = vertices[i][2];
+        }
+    }
 
-    //return maxBounds;
-    return {};
+    Point bounds[2] = {minBounds, maxBounds};
+    return bounds;
+    
 }

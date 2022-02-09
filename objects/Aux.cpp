@@ -9,6 +9,8 @@ Material::Material(Point ka, Point kd, Point ks, float shininess)
     this->shininess = shininess;
 };
 
+//////////////Faces////////////////////
+
 Face::Face() {
     v1 = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
     v2 = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
@@ -85,3 +87,96 @@ Point Face::getNormal()
 {
     return this->normal;
 };
+
+//////////////////Cluster////////////////////
+
+void Cluster::addShape(Shape* shape)
+{
+    this->shapes.push_back(shape);
+};
+
+void Cluster::applyTransformation(Matrix transform)
+{
+    for (int i = 0; i < this->shapes.size(); i++)
+    {
+        this->shapes[i]->applyTransform(transform);
+    }
+};
+
+void Cluster::setCameraCoordinates(Matrix worldToCamera)
+{
+    for (int i = 0; i < this->shapes.size(); i++)
+    {
+        this->shapes[i]->setCameraCoordinates(worldToCamera);
+    }
+};
+
+void Cluster::setWorldCoordinates(Matrix cameraToWorld)
+{
+    for (int i = 0; i < this->shapes.size(); i++)
+    {
+        this->shapes[i]->setWorldCoordinates(cameraToWorld);
+    }
+};
+
+Point* Cluster::Bounds()
+{
+    Point init_bound[2] = *this->shapes[0]->Bounds();
+    Point max_bound = init_bound[0];
+    Point min_bound = init_bound[1];
+
+    for (int i = 0; i < this->shapes.size(); i++)
+    {
+        Point prov_bounds[2] = *this->shapes[i]->Bounds();
+        Point prov_min = prov_bounds[0];
+        Point prov_max = prov_bounds[1];
+        
+        if(prov_min[0] < min_bound[0])
+        {
+            min_bound[0] = prov_min[0];
+        }
+        if(prov_min[1] < min_bound[1])
+        {
+            min_bound[1] = prov_min[1];
+        }
+        if(prov_min[2] < min_bound[2])
+        {
+            min_bound[2] = prov_min[2];
+        }
+        if(prov_max[0] > max_bound[0])
+        {
+            max_bound[0] = prov_max[0];
+        }
+        if(prov_max[1] > max_bound[1])
+        {
+            max_bound[1] = prov_max[1];
+        }
+        if(prov_max[2] > max_bound[2])
+        {
+            max_bound[2] = prov_max[2];
+        }
+
+    }
+    Point bounds[2] = {min_bound, max_bound};
+    return bounds;
+}
+
+Point Cluster::rayIntersect(Point rayOrigin, Point rayDirection)
+{
+    Point pi = Point(MAXFLOAT, MAXFLOAT, MAXFLOAT);
+    float closest_intersection = MAXFLOAT;
+    for (int i = 0; i < this->shapes.size(); i++)
+    {
+        Point p = this->shapes[i]->rayIntersect(rayOrigin, rayDirection);
+        if(p[0] < MAXFLOAT)
+        {
+            float distance = sqrt(pow(p[0] - rayOrigin[0], 2) + pow(p[1] - rayOrigin[1], 2) + pow(p[2] - rayOrigin[2], 2));
+            if(distance < closest_intersection)
+            {
+                closest_intersection = distance;
+                pi = p;
+            }
+        }
+    }
+    return pi;
+}

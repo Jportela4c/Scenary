@@ -12,5 +12,5 @@ public:
     void setWorldCoordinates(Matrix cameraToWorld);
     Point rayIntersect(Point rayOrigin, Point rayDirection);
     Point normal(Point point);
-    Point Bounds();
+    Point* Bounds();
 };

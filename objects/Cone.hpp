@@ -19,5 +19,5 @@ public:
     Point normal(Point point);
     bool validate(Point p, Point ray);
     Point base_intesection(Point rayOrigin, Point rayDirection);
-    Point Bounds();
+    Point* Bounds();
 };
