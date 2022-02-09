@@ -68,41 +68,44 @@ void Cube::updateFaces()
 //Utilizar Vertex
 void Cube::applyTransform(Matrix transform)
 {
-    Vertex aux_center = Vertex(center[0], center[1], center[2], 1);
-
-    aux_center = transform * aux_center;
-    center[0] = aux_center[0];
-    center[1] = aux_center[1];
-    center[2] = aux_center[2];
-
+    Vertex c = Vertex(center[0], center[1], center[2], 1);
+    c = transform * c;
+    this->center = c;
     for (int i = 0; i < 8; i++)
     {
-        Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
+        Vertex v = this->vertices[i];
         Vertex p = transform * v;
         this->vertices[i] = Point(p[0], p[1], p[2]);
     }
-
     updateFaces();
 }
 //Utilizar Vertex
 void Cube::setCameraCoordinates(Matrix worldToCamera)
 {
-    //this->center = worldToCamera * this->center;
-    //for (int i = 0; i < 8; i++)
-    //{
-    //    vertices[i] = worldToCamera * vertices[i];
-    //}
-    //updateFaces();
+    Vertex c = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    c =  worldToCamera * c;
+    this->center = Point(c[0], c[1], c[2]);
+    for (int i = 0; i < 8; i++)
+    {
+        Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
+        v = worldToCamera * v;
+        this->vertices[i] = Point(v[0], v[1], v[2]);
+    }
+    updateFaces();
 }
 //Utilizar Vertex
 void Cube::setWorldCoordinates(Matrix cameraToWorld)
 {
-    //this->center = cameraToWorld * this->center;
-    //for (int i = 0; i < 8; i++)
-    //{
-    //    vertices[i] = cameraToWorld * vertices[i];
-    //}
-    //updateFaces();
+    Vertex c = Vertex(this->center[0], this->center[1], this->center[2], 1);
+    c =  cameraToWorld * c;
+    this->center = Point(c[0], c[1], c[2]);
+    for (int i = 0; i < 8; i++)
+    {
+        Vertex v = Vertex(this->vertices[i][0], this->vertices[i][1], this->vertices[i][2], 1);
+        v = cameraToWorld * v;
+        this->vertices[i] = Point(v[0], v[1], v[2]);
+    }
+    updateFaces();
 }
 
 void Cube::setNormal(Point intersect)
@@ -119,7 +122,7 @@ Point Cube::rayIntersect(Point rayOrigin, Point rayDirection)
         Face face = this->faces[i];
         Point intersection = face.rayIntersection(rayOrigin, rayDirection);
         double intersectionDistance = sqrt(pow(intersection[0] - rayOrigin[0], 2) + pow(intersection[1] - rayOrigin[1], 2) + pow(intersection[2] - rayOrigin[2], 2));
-        if (intersection[2] < MAXFLOAT && intersectionDistance < distance)
+        if (intersection[0] < MAXFLOAT && intersectionDistance < distance)
         {
             distance = intersectionDistance;
             closest_intersection = intersection;

@@ -11,7 +11,7 @@ Cylinder::Cylinder(float radius, float height, Point center_base, Point axis, Ma
     this->mat = mat;
 };
 
-/*Adicionar VERTEX*/
+
 void Cylinder::applyTransform(Matrix transform)
 {
     Vertex cb = Vertex(this->center_base[0], this->center_base[1], this->center_base[2], 1);
@@ -24,7 +24,7 @@ void Cylinder::applyTransform(Matrix transform)
     this->axis = Point(axisv[0], axisv[1], axisv[2]);
     this->center_top = this->center_base + this->axis * this->height;
 };
-/*Adicionar VERTEX*/
+
 void Cylinder::setCameraCoordinates(Matrix worldToCamera)
 {
     Vertex cb = Vertex(this->center_base[0], this->center_base[1], this->center_base[2], 1);
@@ -37,7 +37,7 @@ void Cylinder::setCameraCoordinates(Matrix worldToCamera)
     this->axis = Point(axisv[0], axisv[1], axisv[2]);
     this->center_top = this->center_base + this->axis * this->height;
 };
-/*Adicionar VERTEX*/
+
 void Cylinder::setWorldCoordinates(Matrix cameraToWorld)
 {
     Vertex cb = Vertex(this->center_base[0], this->center_base[1], this->center_base[2], 1);

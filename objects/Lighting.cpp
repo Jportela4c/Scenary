@@ -71,6 +71,7 @@ float SpotLighting::specularFactor(Point point, Point normal)
     Point reflectedDirection = 2*normal*(normal.dot(lightDirection)) - lightDirection;
     Point p = Point(0, 0, 0) - point;
 
+    /*lightDirection * -1 ??*/
     if(lightDirection.dot(this->direction) > cos(this->angle))
     {
         return 0;
@@ -287,3 +288,4 @@ void PointLighting::setWorldCoordinates(Matrix cameraToWorld)
     Vertex d = Vertex(this->position[0], this->position[1], this->position[2], 1);
     d = cameraToWorld * d;
     this->position = Point(d[0], d[1], d[2]);
+};
